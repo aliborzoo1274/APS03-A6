@@ -14,7 +14,7 @@ SRCDIR = src
 INCLUDEDIR = include
 
 # specify the executable file
-EXECUTABLE = UTms.exe
+EXECUTABLE = utms.exe
 
 # specify the source files
 SRCS = $(wildcard $(SRCDIR)/*.cpp)

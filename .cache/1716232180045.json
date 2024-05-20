@@ -1,0 +1,1 @@
+{"date":"2024-05-20T19:09:35.116Z","courseId":"17","assignment":"AP-Spring03-CA6","trace":{"version":20,"content":"#include \"global.hpp\"\r\n\r\nclass Student\r\n{\r\nprivate:\r\n    int sid;\r\n    string major;\r\n};","filename":"e:\\UT\\Programming\\APS03\\A6.1\\include\\students.hpp","identifier":"Text Change","lineCount":8,"languageId":"cpp"},"failed":false}
