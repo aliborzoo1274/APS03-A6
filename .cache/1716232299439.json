@@ -1,1 +1,0 @@
-{"date":"2024-05-20T19:11:29.414Z","courseId":"17","assignment":"AP-Spring03-CA6","trace":{"version":13,"content":"#include \"global.hpp\"\r\n\r\nclass Course\r\n{\r\nprivate:\r\n    int mid;\r\n    string major;\r\n};","filename":"e:\\UT\\Programming\\APS03\\A6.1\\include\\courses.hpp","identifier":"Text Change","lineCount":8,"languageId":"cpp"},"failed":false}

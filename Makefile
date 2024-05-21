@@ -20,23 +20,25 @@ EXECUTABLE = utms.exe
 SRCS = $(wildcard $(SRCDIR)/*.cpp)
 
 # specify the object files
-OBJS = $(patsubst $(SRCDIR)/%cpp, $(BUILDDIR)/%o, $(SRCS))
+OBJS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SRCS))
 
 # specify the include files
 INCLUDES = $(wildcard $(INCLUDEDIR)/*.hpp)
 
 # default rule
-all: directories $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 directories:
-	mkdir $(BUILDDIR)
+	if not exist $(BUILDDIR) mkdir $(BUILDDIR)
+	if not exist $(SRCDIR) mkdir $(SRCDIR)
+	if not exist $(INCLUDEDIR) mkdir $(INCLUDEDIR)
 
 # rule to link the program
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(CXXFLAGS) -I$(INCLUDEDIR) -o $(EXECUTABLE) $^
 
 # rule to compile the program
-$(BUILDDIR)/%o: $(SRCDIR)/%cpp $(INCLUDES)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(INCLUDES) | directories
 	$(CXX) $(CXXFLAGS) -I$(INCLUDEDIR) -c $< -o $@
 
 # rule to clean the build files
