@@ -7,26 +7,59 @@ System::System(vector<Major> majors, vector<Person> persons, vector<Course> cour
     this->courses = courses;
 }
 
+vector<string> System::read_line()
+{
+    vector<string> words;
+    string line, word;
+    if (getline(cin, line))
+    {
+        stringstream line_stream(line);
+        while (line_stream >> word)
+            words.push_back(word);
+    }
+    return words;
+}
+
 void System::answer_command()
 {
-    string command_method;
-    cin >> command_method;
-    if (command_method == "GET")
-        get_method();
-    else if (command_method == "POST")
-        post_method();
-    else if (command_method == "PUT")
-        put_method();
-    else if (command_method == "DELETE")
-        delete_method();
-    else
+    try
     {
-        cerr << "Bad Request" << endl;
+        string command_method;
+        cin >> command_method;
+        if (current_user != nullptr)
+        {
+            if (command_method == "GET")
+                get_method();
+            else if (command_method == "POST")
+                post_method();
+            else if (command_method == "PUT")
+                put_method();
+            else if (command_method == "DELETE")
+                delete_method();
+            else
+                throw runtime_error("Bad Request");
+        }
+        else
+        {
+            if (command_method == "POST")
+                post_method();
+            else if (command_method != "GET" && command_method != "PUT" &&
+                     command_method != "DELETE")
+                throw runtime_error("Bad Request");
+            else
+                throw runtime_error("Permission Denied");
+        }
+    }
+    catch (const runtime_error& e)
+    {
+        cerr << e.what() << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         answer_command();
     }
 }
 
-void System::get_method() {cout << "Hi" << endl;}
+void System::get_method() {}
 
 void System::post_method()
 {
@@ -35,32 +68,51 @@ void System::post_method()
     cin >> command;
     cin >> question_mark;
     if (command == "login")
-        post_login();
+    {
+        if (current_user == nullptr)
+            post_login();
+        else
+            throw runtime_error("Permission Denied");
+    }
 }
 
 void System::put_method() {}
 
 void System::delete_method() {}
 
-void System::post_login() {}
-// {
-//     string word, id, password;
-//     vector<string> words;
-//     while (cin)
-//         words.push_back(word);
-//     for (int i = 0; i < words.size(); i++)
-//     {
-//         if (words[i] == "id")
-//             id = words[i + 1];
-//         if (words[i] == "password")
-//             password = words[i + 1];
-//     }
-//     for (int i = 0; i < students.size(); i++)
-//     {
-//         if (students[i].check_id_conformity(id))
-//         {
-//             if (students[i].check_password_conformity(password))
-//                 current_user = student
-//         }
-//     }
-// }
+void System::post_login()
+{
+    int id;
+    string word, password;
+    bool person_found = false;
+    bool person_is_allowed = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id")
+            id = stoi(words[i + 1]);
+        if (words[i] == "password")
+            password = words[i + 1];
+    }
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].check_id_conformity(id))
+        {
+            person_found = true;
+            if (persons[i].check_password_conformity(password))
+            {
+                person_is_allowed = true;
+                current_user = &persons[i];
+                cout << "OK" << endl;
+                answer_command();
+            }
+        }
+    }
+    if (!person_found)
+        throw runtime_error("Not Found");
+    else
+    {
+        if (!person_is_allowed)
+            throw runtime_error("Permission Denied");
+    }
+}

@@ -14,6 +14,8 @@ private:
     vector<Major> majors;
     vector<Person> persons;
     vector<Course> courses;
+    Person* current_user = nullptr;
+    vector<string> read_line();
     void get_method();
     void post_method();
     void put_method();
