@@ -1,10 +1,9 @@
 #pragma once
 #include "global.hpp"
 #include "system.hpp"
-#include "majors.hpp"
-#include "students.hpp"
-#include "courses.hpp"
-#include "professors.hpp"
+#include "major.hpp"
+#include "course.hpp"
+#include "person.hpp"
 
 class System;
 
@@ -12,8 +11,8 @@ System* read_files(char* argv[]);
 
 vector<Major> read_majors_file(ifstream& majors);
 
-vector<Student> read_students_file(ifstream& students);
+vector<Person> read_person_file(ifstream& persons, string type);
 
 vector<Course> read_courses_file(ifstream& courses);
 
-vector<Professor> read_professors_file(ifstream& professors);
+vector<Person> adjustment_persons(vector<Person> students_list, vector<Person> professors_list);

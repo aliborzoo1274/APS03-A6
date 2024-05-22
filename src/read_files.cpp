@@ -6,15 +6,18 @@ System* read_files(char* argv[])
     vector<Major> majors_list = read_majors_file(majors);
     majors.close();
     ifstream students(argv[2]);
-    vector<Student> student_list = read_students_file(students);
+    string type = "student";
+    vector<Person> students_list = read_person_file(students, type);
     students.close();
-    ifstream courses(argv[3]);
-    vector<Course> course_list = read_courses_file(courses);
-    courses.close();
     ifstream professors(argv[4]);
-    vector<Professor> professor_list = read_professors_file(professors);
+    type = "professor";
+    vector<Person> professors_list = read_person_file(professors, type);
     professors.close();
-    System* system = new System(majors_list, student_list, course_list, professor_list);
+    vector<Person> persons_list = adjustment_persons(students_list, professors_list);
+    ifstream courses(argv[3]);
+    vector<Course> courses_list = read_courses_file(courses);
+    courses.close();
+    System* system = new System(majors_list, persons_list, courses_list);
     return system;
 }
 
@@ -50,15 +53,15 @@ vector<Major> read_majors_file(ifstream& majors)
     return majors_list;
 }
 
-vector<Student> read_students_file(ifstream& students)
+vector<Person> read_person_file(ifstream& persons, string type)
 {
-    vector<Student> studens_list;
+    vector<Person> persons_list;
     bool is_first_line = true;
-    int sid, major_id, semester;
+    int id, major_id;
     int parameter_counter;
-    string name, password;
+    string name, semester_or_position, password;
     string line, line_parameter;
-    while (getline(students, line))
+    while (getline(persons, line))
     {
         parameter_counter = 0;
         if (is_first_line)
@@ -72,7 +75,7 @@ vector<Student> read_students_file(ifstream& students)
             switch (parameter_counter)
             {
             case 0:
-                sid = stoi(line_parameter);
+                id = stoi(line_parameter);
                 break;
             case 1:
                 name = line_parameter;
@@ -81,17 +84,17 @@ vector<Student> read_students_file(ifstream& students)
                 major_id = stoi(line_parameter);
                 break;
             case 3:
-                semester = stoi(line_parameter);
+                semester_or_position = line_parameter;
                 break;
             default:
                 password = line_parameter;
-                studens_list.push_back({sid, name, major_id, semester, password});
+                persons_list.push_back({type, id, name, major_id, semester_or_position, password});
                 break;
             }
             parameter_counter++;
         }
     }
-    return studens_list;
+    return persons_list;
 }
 
 vector<Course> read_courses_file(ifstream& courses)
@@ -142,46 +145,8 @@ vector<Course> read_courses_file(ifstream& courses)
     return courses_list;
 }
 
-vector<Professor> read_professors_file(ifstream& professors)
+vector<Person> adjustment_persons(vector<Person> students_list, vector<Person> professors_list)
 {
-    vector<Professor> professors_list;
-    bool is_first_line = true;
-    int pid, major_id;
-    int parameter_counter;
-    string name, position, password;
-    string line, line_parameter;
-    while (getline(professors, line))
-    {
-        parameter_counter = 0;
-        if (is_first_line)
-        {
-            is_first_line = false;
-            continue;
-        }
-        stringstream line_stream(line);
-        while (getline(line_stream, line_parameter, FIRST_DELIM))
-        {
-            switch (parameter_counter)
-            {
-            case 0:
-                pid = stoi(line_parameter);
-                break;
-            case 1:
-                name = line_parameter;
-                break;
-            case 2:
-                major_id = stoi(line_parameter);
-                break;
-            case 3:
-                position = line_parameter;
-                break;
-            default:
-                password = line_parameter;
-                professors_list.push_back({pid, name, major_id, position, password});
-                break;
-            }
-            parameter_counter++;
-        }
-    }
-    return professors_list;
+    students_list.insert(students_list.end(), professors_list.begin(), professors_list.end());
+    return students_list;
 }

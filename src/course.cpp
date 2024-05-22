@@ -1,4 +1,4 @@
-#include "courses.hpp"
+#include "course.hpp"
 
 Course::Course(int cid, string name, int credit, int prerequisite, vector<int> majors_id)
 {

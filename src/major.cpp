@@ -1,4 +1,4 @@
-#include "majors.hpp"
+#include "major.hpp"
 
 Major::Major(int mid, string name)
 {
