@@ -20,6 +20,12 @@ vector<string> System::read_line()
     return words;
 }
 
+void System::order_done()
+{
+    cout << "OK" << endl;
+    answer_command();
+}
+
 void System::answer_command()
 {
     try
@@ -67,6 +73,8 @@ void System::post_method()
     char question_mark;
     cin >> command;
     cin >> question_mark;
+    if (question_mark != '?')
+        throw runtime_error("Bad Request");
     if (command == "login")
     {
         if (current_user == nullptr)
@@ -74,6 +82,18 @@ void System::post_method()
         else
             throw runtime_error("Permission Denied");
     }
+    else if (command == "logout")
+    {
+        if (current_user == nullptr)
+            throw runtime_error("Permission Denied");
+        else
+        {
+            current_user = nullptr;
+            order_done();
+        }
+    }
+    else
+        throw runtime_error("Bad Request");
 }
 
 void System::put_method() {}
@@ -103,8 +123,7 @@ void System::post_login()
             {
                 person_is_allowed = true;
                 current_user = &persons[i];
-                cout << "OK" << endl;
-                answer_command();
+                order_done();
             }
         }
     }

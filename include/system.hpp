@@ -16,6 +16,7 @@ private:
     vector<Course> courses;
     Person* current_user = nullptr;
     vector<string> read_line();
+    void order_done();
     void get_method();
     void post_method();
     void put_method();
