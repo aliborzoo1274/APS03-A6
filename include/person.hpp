@@ -16,6 +16,7 @@ public:
     bool check_id_conformity(int id);
     bool check_password_conformity(string password);
     void send_post(string title, string message);
+    bool has_post_id_then_delete(int id);
     void print_posts()
     {
         for (auto i : posts)

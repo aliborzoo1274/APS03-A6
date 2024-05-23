@@ -33,3 +33,17 @@ void Person::send_post(string title, string message)
         post_id = posts[posts.size() - 1].post_id + 1;
     posts.push_back({post_id, title, message});
 }
+
+bool Person::has_post_id_then_delete(int id)
+{
+    bool has_post_id = false;
+    for (int i = 0; i < posts.size(); i++)
+    {
+        if (posts[i].post_id == id)
+        {
+            has_post_id = true;
+            posts.erase(posts.begin() + i);
+        }
+    }
+    return has_post_id;
+}

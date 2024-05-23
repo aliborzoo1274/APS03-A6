@@ -23,4 +23,5 @@ private:
     void delete_method();
     void post_login();
     void post_post();
+    void delete_post();
 };
