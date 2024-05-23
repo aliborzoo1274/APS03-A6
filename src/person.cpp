@@ -23,3 +23,13 @@ bool Person::check_password_conformity(string password)
         return true;
     else return false;
 }
+
+void Person::send_post(string title, string message)
+{
+    int post_id;
+    if (posts.size() == 0)
+        post_id = 1;
+    else
+        post_id = posts[posts.size() - 1].post_id + 1;
+    posts.push_back({post_id, title, message});
+}

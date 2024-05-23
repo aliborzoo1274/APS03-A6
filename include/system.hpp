@@ -22,4 +22,5 @@ private:
     void put_method();
     void delete_method();
     void post_login();
+    void post_post();
 };
