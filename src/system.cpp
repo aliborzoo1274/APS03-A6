@@ -28,40 +28,42 @@ void System::order_done()
 
 void System::answer_command()
 {
-    try
+    bool keep_going = true;
+    while (keep_going)
     {
-        string command_method;
-        cin >> command_method;
-        if (current_user != nullptr)
+        try
         {
-            if (command_method == "GET")
-                get_method();
-            else if (command_method == "POST")
-                post_method();
-            else if (command_method == "PUT")
-                put_method();
-            else if (command_method == "DELETE")
-                delete_method();
+            string command_method;
+            cin >> command_method;
+            if (current_user != nullptr)
+            {
+                if (command_method == "GET")
+                    get_method();
+                else if (command_method == "POST")
+                    post_method();
+                else if (command_method == "PUT")
+                    put_method();
+                else if (command_method == "DELETE")
+                    delete_method();
+                else
+                    throw runtime_error("Bad Request");
+            }
             else
-                throw runtime_error("Bad Request");
+            {
+                if (command_method == "POST")
+                    post_method();
+                else if (command_method != "GET" && command_method != "PUT" &&
+                        command_method != "DELETE")
+                    throw runtime_error("Bad Request");
+                else
+                    throw runtime_error("Permission Denied");
+            }
+            keep_going = false;
         }
-        else
+        catch (const runtime_error& e)
         {
-            if (command_method == "POST")
-                post_method();
-            else if (command_method != "GET" && command_method != "PUT" &&
-                     command_method != "DELETE")
-                throw runtime_error("Bad Request");
-            else
-                throw runtime_error("Permission Denied");
+            cerr << e.what() << endl;
         }
-    }
-    catch (const runtime_error& e)
-    {
-        cerr << e.what() << endl;
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        answer_command();
     }
 }
 
