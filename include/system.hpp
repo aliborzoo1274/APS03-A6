@@ -24,4 +24,5 @@ private:
     void post_login();
     void post_post();
     void delete_post();
+    void post_connect();
 };

@@ -30,4 +30,5 @@ private:
     string semester_or_position;
     string password;
     vector<Post> posts;
+    vector<Person*> connected_users;
 };
