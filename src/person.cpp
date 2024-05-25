@@ -32,6 +32,8 @@ void Person::send_post(string title, string message)
     else
         post_id = posts[posts.size() - 1].post_id + 1;
     posts.push_back({post_id, title, message});
+    for (auto c : connected_users)
+        c->notifications.push_back({this->id, this->name, "New Post"});
 }
 
 bool Person::has_post_id_then_delete(int id)
@@ -74,4 +76,25 @@ bool Person::id_match_then_connect(int id, Person* current_user)
 void Person::connect_to_person(Person* person)
 {
     connected_users.push_back(person);
+}
+
+bool Person::id_match_then_show_page(int id, vector<Major> majors)
+{
+    string major;
+    for (int i = 0; i < majors.size(); i++)
+    {
+        if (majors[i].get_id() == major_id)
+            major = majors[i].get_name();
+    }
+    if (this->id == id)
+    {
+        if (type == "student")
+            cout << name << ' ' << major << ' ' << semester_or_position << endl;
+        else if (type == "professor")
+            cout << name << ' ' << semester_or_position << endl;
+        for (int i = posts.size() - 1; i >= 0; i--)
+            cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
+        return true;
+    }
+    return false;
 }

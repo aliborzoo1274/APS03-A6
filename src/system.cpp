@@ -51,6 +51,16 @@ bool System::has_person_id_then_connect(int id)
     return false;
 }
 
+bool System::has_person_id_then_show_page(int id)
+{
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].id_match_then_show_page(id, majors))
+            return true;
+    }
+    return false;
+}
+
 void System::answer_command()
 {
     while (TRUE)

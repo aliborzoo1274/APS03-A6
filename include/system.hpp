@@ -19,13 +19,15 @@ private:
     void order_done();
     void error(string message);
     void get_method();
+    void get_personal_page();
     void post_method();
-    void put_method();
-    void delete_method();
     void post_login();
     void post_post();
-    void delete_post();
     void post_connect();
+    void put_method();
+    void delete_method();
+    void delete_post();
     bool connected_before(int id);
     bool has_person_id_then_connect(int id);
+    bool has_person_id_then_show_page(int id);
 };
