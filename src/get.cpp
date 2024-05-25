@@ -2,6 +2,10 @@
 
 void System::get_method()
 {
-    current_user->print_posts();
+    for (int i = 0; i < persons.size(); i++)
+    {
+        persons[i].get_inf();
+        persons[i].print_connected();
+    }
     answer_command();
 }

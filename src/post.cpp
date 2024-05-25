@@ -7,18 +7,18 @@ void System::post_method()
     cin >> command;
     cin >> question_mark;
     if (question_mark != '?')
-        throw runtime_error("Bad Request");
+        error("Bad Request");
     if (current_user == nullptr)
     {
         if (command == "login")
             post_login();
         else
-            throw runtime_error("Permission Denied");
+            error("Permission Denied");
     }
     else
     {
         if (command == "login")
-            throw runtime_error("Permission Denied");
+            error("Permission Denied");
         else if (command == "logout")
         {
             current_user = nullptr;
@@ -26,8 +26,10 @@ void System::post_method()
         }
         else if (command == "post")
             post_post();
+        else if (command == "connect")
+            post_connect();
         else
-            throw runtime_error("Not Found");
+            error("Not Found");
     }
 }
 
@@ -41,7 +43,16 @@ void System::post_login()
     for (int i = 0; i < words.size(); i++)
     {
         if (words[i] == "id")
-            id = stoi(words[i + 1]);
+        {
+            try
+            {
+                id = stoi(words[i + 1]);
+            }
+            catch (const invalid_argument& e)
+            {
+                error("Bad Request");
+            }
+        }
         if (words[i] == "password")
             password = words[i + 1];
     }
@@ -59,11 +70,11 @@ void System::post_login()
         }
     }
     if (!person_found)
-        throw runtime_error("Not Found");
+        error("Not Found");
     else
     {
         if (!person_is_allowed)
-            throw runtime_error("Permission Denied");
+            error("Permission Denied");
     }
 }
 
@@ -103,9 +114,43 @@ void System::post_post()
         }
     }
     if (!title_found || !message_found)
-        throw runtime_error("Bad Request");
+        error("Bad Request");
     current_user->send_post(title, message);
     order_done();
 }
 
-void System::post_connect() {}
+void System::post_connect()
+{
+    int person_id;
+    bool id_in_line_found = false;
+    bool id_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id")
+        {
+            id_in_line_found = true;
+            if (words[i + 1].find('.') != string::npos)
+                error("Bad Request");
+            try
+            {
+                person_id = stoi(words[i + 1]);
+            }
+            catch (const invalid_argument& e)
+            {
+                error("Bad Request");
+            }
+            if (person_id < 0)
+                error("Bad Request");
+        }
+    }
+    if (!id_in_line_found)
+        error("Bad Request");
+    if (connected_before(person_id))
+        error("Bad Request");
+    if (has_person_id_then_connect(person_id))
+        id_found = true;
+    if (!id_found)
+        error("Not Found");
+    order_done();
+}

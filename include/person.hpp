@@ -17,10 +17,17 @@ public:
     bool check_password_conformity(string password);
     void send_post(string title, string message);
     bool has_post_id_then_delete(int id);
-    void print_posts()
+    bool connected_before_to_you(int id);
+    bool id_match_then_connect(int id, Person* current_user);
+    void connect_to_person(Person* person);
+    void print_connected()
     {
-        for (auto i : posts)
-            cout << i.title << ' ' << i.message << ' ' << i.post_id << endl;
+        for (auto i : connected_users)
+            cout << i->id << ' ' << i->name << ' ' << i->password << endl;
+    }
+    void get_inf()
+    {
+        cout << type << ' ' << id << endl;
     }
 private:
     string type;

@@ -7,11 +7,11 @@ void System::delete_method()
     cin >> command;
     cin >> question_mark;
     if (question_mark != '?')
-        throw runtime_error("Bad Request");
+        error("Bad Request");
     if (command == "post")
         delete_post();
     else
-        throw runtime_error("Not Found");
+        error("Not Found");
 }
 
 void System::delete_post()
@@ -25,14 +25,21 @@ void System::delete_post()
         if (words[i] == "id")
         {
             id_in_line_found = true;
-            post_id = stoi(words[i + 1]);
+            try
+            {
+                post_id = stoi(words[i + 1]);
+            }
+            catch (const invalid_argument& e)
+            {
+                error("Bad Request");
+            }
         }
     }
+    if (!id_in_line_found)
+        error("Bad Request");
     if (current_user->has_post_id_then_delete(post_id))
         id_found = true;
-    if (!id_in_line_found)
-        throw runtime_error("Bad Request");
     if (!id_found)
-        throw runtime_error("Not Found");
+        error("Not Found");
     order_done();
 }

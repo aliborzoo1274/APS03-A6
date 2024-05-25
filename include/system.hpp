@@ -17,6 +17,7 @@ private:
     Person* current_user = nullptr;
     vector<string> read_line();
     void order_done();
+    void error(string message);
     void get_method();
     void post_method();
     void put_method();
@@ -25,4 +26,6 @@ private:
     void post_post();
     void delete_post();
     void post_connect();
+    bool connected_before(int id);
+    bool has_person_id_then_connect(int id);
 };

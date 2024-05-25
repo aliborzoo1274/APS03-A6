@@ -36,14 +36,42 @@ void Person::send_post(string title, string message)
 
 bool Person::has_post_id_then_delete(int id)
 {
-    bool has_post_id = false;
     for (int i = 0; i < posts.size(); i++)
     {
         if (posts[i].post_id == id)
         {
-            has_post_id = true;
             posts.erase(posts.begin() + i);
+            return true;
         }
     }
-    return has_post_id;
+    return false;
+}
+
+bool Person::connected_before_to_you(int id)
+{
+    if (this->id != id)
+    {
+        for (int i = 0; i < connected_users.size(); i++)
+        {
+            if (connected_users[i]->id == id)
+                return true;
+        }
+    }
+    else return true;
+    return false;
+}
+
+bool Person::id_match_then_connect(int id, Person* current_user)
+{
+    if (this->id == id)
+    {
+        connect_to_person(current_user);
+        return true;
+    }
+    return false;
+}
+
+void Person::connect_to_person(Person* person)
+{
+    connected_users.push_back(person);
 }

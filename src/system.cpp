@@ -9,27 +9,51 @@ System::System(vector<Major> majors, vector<Person> persons, vector<Course> cour
 
 vector<string> System::read_line()
 {
+    string word;
     vector<string> words;
-    string line, word;
-    if (getline(cin, line))
-    {
-        stringstream line_stream(line);
-        while (line_stream >> word)
-            words.push_back(word);
-    }
+    while (cin.peek() != '\n' && (cin >> word))
+        words.push_back(word);
     return words;
 }
 
 void System::order_done()
 {
     cout << "OK" << endl;
-    answer_command();
+}
+
+void System::error(string message)
+{
+    if (message == "Bad Request")
+        throw runtime_error("Bad Request");
+    else if (message == "Not Found")
+        throw runtime_error("Not Found");
+    else if (message == "Permission Denied");
+        throw runtime_error("Permission Denied");
+}
+
+bool System::connected_before(int id)
+{
+    if (current_user->connected_before_to_you(id))
+        return true;
+    return false;
+}
+
+bool System::has_person_id_then_connect(int id)
+{
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].id_match_then_connect(id, current_user))
+        {
+            current_user->connect_to_person(&persons[i]);
+            return true;
+        }
+    }
+    return false;
 }
 
 void System::answer_command()
 {
-    bool keep_going = true;
-    while (keep_going)
+    while (TRUE)
     {
         try
         {
@@ -46,7 +70,7 @@ void System::answer_command()
                 else if (command_method == "DELETE")
                     delete_method();
                 else
-                    throw runtime_error("Bad Request");
+                    error("Bad Request");
             }
             else
             {
@@ -54,16 +78,16 @@ void System::answer_command()
                     post_method();
                 else if (command_method != "GET" && command_method != "PUT" &&
                          command_method != "DELETE")
-                    throw runtime_error("Bad Request");
+                    error("Bad Request");
                 else
-                    throw runtime_error("Permission Denied");
+                    error("Permission Denied");
             }
-            keep_going = false;
         }
         catch (const runtime_error& e)
         {
             cerr << e.what() << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 }
-
