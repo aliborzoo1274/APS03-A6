@@ -10,14 +10,14 @@ Person::Person(string type, int id, string name, int major_id, string semester_o
     this->password = password;
 }
 
-bool Person::check_id_conformity(int id)
+bool Person::id_match(int id)
 {
     if (this->id == id)
         return true;
     else return false;
 }
 
-bool Person::check_password_conformity(string password)
+bool Person::password_match(string password)
 {
     if (this->password == password)
         return true;
@@ -63,22 +63,12 @@ bool Person::connected_before_to_you(int id)
     return false;
 }
 
-bool Person::id_match_then_connect(int id, Person* current_user)
-{
-    if (this->id == id)
-    {
-        connect_to_person(current_user);
-        return true;
-    }
-    return false;
-}
-
 void Person::connect_to_person(Person* person)
 {
     connected_users.push_back(person);
 }
 
-bool Person::id_match_then_show_page(int id, vector<Major> majors)
+void Person::show_page(vector<Major> majors)
 {
     string major;
     for (int i = 0; i < majors.size(); i++)
@@ -86,15 +76,10 @@ bool Person::id_match_then_show_page(int id, vector<Major> majors)
         if (majors[i].get_id() == major_id)
             major = majors[i].get_name();
     }
-    if (this->id == id)
-    {
-        if (type == "student")
-            cout << name << ' ' << major << ' ' << semester_or_position << endl;
-        else if (type == "professor")
-            cout << name << ' ' << semester_or_position << endl;
-        for (int i = posts.size() - 1; i >= 0; i--)
-            cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
-        return true;
-    }
-    return false;
+    if (type == "student")
+        cout << name << ' ' << major << ' ' << semester_or_position << endl;
+    else if (type == "professor")
+        cout << name << ' ' << semester_or_position << endl;
+    for (int i = posts.size() - 1; i >= 0; i--)
+        cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
 }

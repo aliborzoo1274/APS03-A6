@@ -7,60 +7,6 @@ System::System(vector<Major> majors, vector<Person> persons, vector<Course> cour
     this->courses = courses;
 }
 
-vector<string> System::read_line()
-{
-    string word;
-    vector<string> words;
-    while (cin.peek() != '\n' && (cin >> word))
-        words.push_back(word);
-    return words;
-}
-
-void System::order_done()
-{
-    cout << "OK" << endl;
-}
-
-void System::error(string message)
-{
-    if (message == "Bad Request")
-        throw runtime_error("Bad Request");
-    else if (message == "Not Found")
-        throw runtime_error("Not Found");
-    else if (message == "Permission Denied");
-        throw runtime_error("Permission Denied");
-}
-
-bool System::connected_before(int id)
-{
-    if (current_user->connected_before_to_you(id))
-        return true;
-    return false;
-}
-
-bool System::has_person_id_then_connect(int id)
-{
-    for (int i = 0; i < persons.size(); i++)
-    {
-        if (persons[i].id_match_then_connect(id, current_user))
-        {
-            current_user->connect_to_person(&persons[i]);
-            return true;
-        }
-    }
-    return false;
-}
-
-bool System::has_person_id_then_show_page(int id)
-{
-    for (int i = 0; i < persons.size(); i++)
-    {
-        if (persons[i].id_match_then_show_page(id, majors))
-            return true;
-    }
-    return false;
-}
-
 void System::answer_command()
 {
     while (TRUE)
@@ -101,3 +47,74 @@ void System::answer_command()
         }
     }
 }
+
+vector<string> System::read_line()
+{
+    string word;
+    vector<string> words;
+    while (cin.peek() != '\n' && (cin >> word))
+        words.push_back(word);
+    return words;
+}
+
+void System::order_done()
+{
+    cout << "OK" << endl;
+}
+
+void System::error(string message)
+{
+    if (message == "Bad Request")
+        throw runtime_error("Bad Request");
+    else if (message == "Not Found")
+        throw runtime_error("Not Found");
+    else if (message == "Permission Denied");
+        throw runtime_error("Permission Denied");
+}
+
+bool System::connected_before(int id)
+{
+    if (current_user->connected_before_to_you(id))
+        return true;
+    return false;
+}
+
+bool System::has_person_id_then_connect(int id)
+{
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].id_match(id))
+        {
+            current_user->connect_to_person(&persons[i]);
+            persons[i].connect_to_person(current_user);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool System::has_person_id_then_show_page(int id)
+{
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].id_match(id))
+        {
+            persons[i].show_page(majors);
+            return true;
+        }
+    }
+    return false;
+}
+
+// bool System::has_person_id_and_post_id_then_show_post(int person_id, int post_id)
+// {
+//     for (int i = 0; i < persons.size(); i++)
+//     {
+//         if (persons[i].id_match(person_id))
+//         {
+//             if (persons[i].has_post_then_show_it)
+//                 return true;
+//         }
+//     }
+//     return false;
+// }

@@ -20,14 +20,13 @@ class Person
 {
 public:
     Person(string type, int id, string name, int major_id, string semester_or_position, string password);
-    bool check_id_conformity(int id);
-    bool check_password_conformity(string password);
+    bool id_match(int id);
+    bool password_match(string password);
     void send_post(string title, string message);
     bool has_post_id_then_delete(int id);
     bool connected_before_to_you(int id);
-    bool id_match_then_connect(int id, Person* current_user);
     void connect_to_person(Person* person);
-    bool id_match_then_show_page(int id, vector<Major> majors);
+    void show_page(vector<Major> majors);
     void print_connected()
     {
         for (auto i : connected_users)

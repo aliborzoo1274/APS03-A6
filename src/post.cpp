@@ -58,10 +58,10 @@ void System::post_login()
     }
     for (int i = 0; i < persons.size(); i++)
     {
-        if (persons[i].check_id_conformity(id))
+        if (persons[i].id_match(id))
         {
             person_found = true;
-            if (persons[i].check_password_conformity(password))
+            if (persons[i].password_match(password))
             {
                 person_is_allowed = true;
                 current_user = &persons[i];
