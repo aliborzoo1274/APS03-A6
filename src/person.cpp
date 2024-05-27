@@ -89,3 +89,16 @@ bool Person::has_post_then_show_it(int id)
     }
     return false;
 }
+
+bool Person::show_notifications()
+{
+    if (notifications.size() == 0)
+        return false;
+    else
+    {
+        for (int i = notifications.size() - 1; i >= 0; i--)
+            cout << notifications[i].person_id << ' ' << notifications[i].person_name << ": " << notifications[i].message << endl;
+        vector<Notification>().swap(notifications);
+        return true;
+    }
+}

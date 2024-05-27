@@ -16,13 +16,15 @@ private:
     vector<Course> courses;
     Person* current_user = nullptr;
     vector<string> read_line();
-    void order_done();
+    void order_done(string message);
     void error(string message);
     void get_method();
     void get_personal_page();
     void get_post();
+    void get_notif();
     void post_method();
     void post_login();
+    void post_logout();
     void post_post();
     void post_connect();
     void put_method();

@@ -57,9 +57,12 @@ vector<string> System::read_line()
     return words;
 }
 
-void System::order_done()
+void System::order_done(string message)
 {
-    cout << "OK" << endl;
+    if (message == "OK")
+        cout << "OK" << endl;
+    else if (message == "Empty")
+        cout << "Empty" << endl;
 }
 
 void System::error(string message)

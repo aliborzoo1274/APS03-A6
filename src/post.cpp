@@ -20,10 +20,7 @@ void System::post_method()
         if (command == "login")
             error("Permission Denied");
         else if (command == "logout")
-        {
-            current_user = nullptr;
-            order_done();
-        }
+            post_logout();
         else if (command == "post")
             post_post();
         else if (command == "connect")
@@ -65,7 +62,7 @@ void System::post_login()
             {
                 person_is_allowed = true;
                 current_user = &persons[i];
-                order_done();
+                order_done("OK");
             }
         }
     }
@@ -76,6 +73,12 @@ void System::post_login()
         if (!person_is_allowed)
             error("Permission Denied");
     }
+}
+
+void System::post_logout()
+{
+    current_user = nullptr;
+    order_done("OK");
 }
 
 void System::post_post()
@@ -116,7 +119,7 @@ void System::post_post()
     if (!title_found || !message_found)
         error("Bad Request");
     current_user->send_post(title, message);
-    order_done();
+    order_done("OK");
 }
 
 void System::post_connect()
@@ -152,5 +155,5 @@ void System::post_connect()
         id_found = true;
     if (!id_found)
         error("Not Found");
-    order_done();
+    order_done("OK");
 }

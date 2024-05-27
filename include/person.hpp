@@ -28,6 +28,7 @@ public:
     void connect_to_person(Person* person);
     void show_page();
     bool has_post_then_show_it(int id);
+    bool show_notifications();
     void print_connected()
     {
         for (auto i : connected_users)

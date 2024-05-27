@@ -12,6 +12,8 @@ void System::get_method()
         get_personal_page();
     else if (command == "post")
         get_post();
+    else if (command == "notification")
+        get_notif();
     else
         error("Not Found");
 }
@@ -101,4 +103,10 @@ void System::get_post()
     }
     if (!id_found || !post_id_found)
         error("Not Found");
+}
+
+void System::get_notif()
+{
+    if (!current_user->show_notifications())
+        order_done("Empty");
 }

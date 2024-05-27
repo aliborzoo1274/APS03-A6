@@ -41,5 +41,5 @@ void System::delete_post()
         id_found = true;
     if (!id_found)
         error("Not Found");
-    order_done();
+    order_done("OK");
 }
