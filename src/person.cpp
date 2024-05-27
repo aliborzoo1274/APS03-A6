@@ -26,12 +26,9 @@ bool Person::password_match(string password)
 
 void Person::send_post(string title, string message)
 {
-    int post_id;
-    if (posts.size() == 0)
-        post_id = 1;
-    else
-        post_id = posts[posts.size() - 1].post_id + 1;
+    int post_id = num_of_posts;
     posts.push_back({post_id, title, message});
+    num_of_posts++;
     for (auto c : connected_users)
         c->notifications.push_back({this->id, this->name, "New Post"});
 }

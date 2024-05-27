@@ -44,6 +44,7 @@ private:
     string semester_or_position;
     string password;
     vector<Post> posts;
+    int num_of_posts = 1;
     vector<Person*> connected_users;
     vector<Notification> notifications;
 };
