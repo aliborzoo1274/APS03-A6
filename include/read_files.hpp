@@ -6,12 +6,13 @@
 #include "person.hpp"
 
 class System;
+class Person;
 
 System* read_files(char* argv[]);
 
 vector<Major> read_majors_file(ifstream& majors);
 
-vector<Person> read_person_file(ifstream& persons, string type);
+vector<Person> read_person_file(ifstream& persons, vector<Major> majors_list, string type);
 
 vector<Course> read_courses_file(ifstream& courses);
 

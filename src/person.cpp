@@ -1,11 +1,12 @@
 #include "person.hpp"
 
-Person::Person(string type, int id, string name, int major_id, string semester_or_position, string password)
+Person::Person(string type, int id, string name, int major_id, string major_name, string semester_or_position, string password)
 {
     this->type = type;
     this->id = id;
     this->name = name;
     this->major_id = major_id;
+    this->major_name = major_name;
     this->semester_or_position = semester_or_position;
     this->password = password;
 }
@@ -65,18 +66,26 @@ void Person::connect_to_person(Person* person)
     connected_users.push_back(person);
 }
 
-void Person::show_page(vector<Major> majors)
+void Person::show_page()
 {
-    string major;
-    for (int i = 0; i < majors.size(); i++)
-    {
-        if (majors[i].get_id() == major_id)
-            major = majors[i].get_name();
-    }
     if (type == "student")
-        cout << name << ' ' << major << ' ' << semester_or_position << endl;
+        cout << name << ' ' << major_name << ' ' << semester_or_position << endl;
     else if (type == "professor")
         cout << name << ' ' << semester_or_position << endl;
     for (int i = posts.size() - 1; i >= 0; i--)
         cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
+}
+
+bool Person::has_post_then_show_it(int id)
+{
+    for (int i = 0; i < posts.size(); i++)
+    {
+        if (posts[i].post_id == id)
+        {
+            cout << name << ' ' << major_name << ' ' << semester_or_position << endl;
+            cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << ' ' << '"' << posts[i].message << '"' << endl;
+            return true;
+        }
+    }
+    return false;
 }

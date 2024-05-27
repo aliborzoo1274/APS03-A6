@@ -7,11 +7,11 @@ System* read_files(char* argv[])
     majors.close();
     ifstream students(argv[2]);
     string type = "student";
-    vector<Person> students_list = read_person_file(students, type);
+    vector<Person> students_list = read_person_file(students, majors_list, type);
     students.close();
     ifstream professors(argv[4]);
     type = "professor";
-    vector<Person> professors_list = read_person_file(professors, type);
+    vector<Person> professors_list = read_person_file(professors, majors_list, type);
     professors.close();
     vector<Person> persons_list = adjustment_persons(students_list, professors_list);
     ifstream courses(argv[3]);
@@ -53,13 +53,13 @@ vector<Major> read_majors_file(ifstream& majors)
     return majors_list;
 }
 
-vector<Person> read_person_file(ifstream& persons, string type)
+vector<Person> read_person_file(ifstream& persons, vector<Major> majors_list, string type)
 {
     vector<Person> persons_list;
     bool is_first_line = true;
     int id, major_id;
     int parameter_counter;
-    string name, semester_or_position, password;
+    string name, major_name, semester_or_position, password;
     string line, line_parameter;
     while (getline(persons, line))
     {
@@ -82,13 +82,18 @@ vector<Person> read_person_file(ifstream& persons, string type)
                 break;
             case 2:
                 major_id = stoi(line_parameter);
+                for (int i = 0; i < majors_list.size(); i++)
+                {
+                    if (majors_list[i].get_id() == major_id)
+                        major_name = majors_list[i].get_name();
+                }
                 break;
             case 3:
                 semester_or_position = line_parameter;
                 break;
             default:
                 password = line_parameter;
-                persons_list.push_back({type, id, name, major_id, semester_or_position, password});
+                persons_list.push_back({type, id, name, major_id, major_name, semester_or_position, password});
                 break;
             }
             parameter_counter++;

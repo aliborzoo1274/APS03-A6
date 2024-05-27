@@ -1,6 +1,6 @@
 #pragma once
 #include "global.hpp"
-#include "major.hpp"
+#include "system.hpp"
 
 struct Post
 {
@@ -19,14 +19,15 @@ struct Notification
 class Person
 {
 public:
-    Person(string type, int id, string name, int major_id, string semester_or_position, string password);
+    Person(string type, int id, string name, int major_id, string major_name, string semester_or_position, string password);
     bool id_match(int id);
     bool password_match(string password);
     void send_post(string title, string message);
     bool has_post_id_then_delete(int id);
     bool connected_before_to_you(int id);
     void connect_to_person(Person* person);
-    void show_page(vector<Major> majors);
+    void show_page();
+    bool has_post_then_show_it(int id);
     void print_connected()
     {
         for (auto i : connected_users)
@@ -41,6 +42,7 @@ private:
     int id;
     string name;
     int major_id;
+    string major_name;
     string semester_or_position;
     string password;
     vector<Post> posts;

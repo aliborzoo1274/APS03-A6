@@ -99,22 +99,22 @@ bool System::has_person_id_then_show_page(int id)
     {
         if (persons[i].id_match(id))
         {
-            persons[i].show_page(majors);
+            persons[i].show_page();
             return true;
         }
     }
     return false;
 }
 
-// bool System::has_person_id_and_post_id_then_show_post(int person_id, int post_id)
-// {
-//     for (int i = 0; i < persons.size(); i++)
-//     {
-//         if (persons[i].id_match(person_id))
-//         {
-//             if (persons[i].has_post_then_show_it)
-//                 return true;
-//         }
-//     }
-//     return false;
-// }
+bool System::has_person_id_and_post_id_then_show_post(int person_id, int post_id)
+{
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i].id_match(person_id))
+        {
+            if (persons[i].has_post_then_show_it(post_id))
+                return true;
+        }
+    }
+    return false;
+}

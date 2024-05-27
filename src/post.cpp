@@ -140,7 +140,7 @@ void System::post_connect()
             {
                 error("Bad Request");
             }
-            if (person_id <= 0)
+            if (person_id < 0)
                 error("Bad Request");
         }
     }

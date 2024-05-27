@@ -20,7 +20,7 @@ private:
     void error(string message);
     void get_method();
     void get_personal_page();
-    //void get_post();
+    void get_post();
     void post_method();
     void post_login();
     void post_post();
@@ -31,5 +31,5 @@ private:
     bool connected_before(int id);
     bool has_person_id_then_connect(int id);
     bool has_person_id_then_show_page(int id);
-    //bool has_person_id_and_post_id_then_show_post(int person_id, int post_id);
+    bool has_person_id_and_post_id_then_show_post(int person_id, int post_id);
 };
