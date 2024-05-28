@@ -11,3 +11,4 @@ using namespace std;
 const int TRUE = 1;
 const char FIRST_DELIM = ',';
 const char SECOND_DELIM = ';';
+const string ADMIN = "u";

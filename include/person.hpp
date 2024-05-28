@@ -20,6 +20,7 @@ class Person
 {
 public:
     Person(string type, int id, string name, int major_id, string major_name, string semester_or_position, string password);
+    Person(string type, int id, string name, string password);
     bool id_match(int id);
     bool password_match(string password);
     void send_post(string title, string message);

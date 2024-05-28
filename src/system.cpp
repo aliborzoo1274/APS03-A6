@@ -5,6 +5,10 @@ System::System(vector<Major> majors, vector<Person> persons, vector<Course> cour
     this->majors = majors;
     this->persons = persons;
     this->courses = courses;
+    Person* admin = new Person("admin", 0, ADMIN, ADMIN);
+    this->persons.push_back(*admin);
+    for (int i = 0; i < this->persons.size() - 1; i++)
+        this->persons[this->persons.size() - 1].connect_to_person(&this->persons[i]);
 }
 
 void System::answer_command()

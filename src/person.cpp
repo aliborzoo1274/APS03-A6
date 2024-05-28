@@ -11,6 +11,14 @@ Person::Person(string type, int id, string name, int major_id, string major_name
     this->password = password;
 }
 
+Person::Person(string type, int id, string name, string password)
+{
+    this->type = type;
+    this->id = id;
+    this->name = name;
+    this->password = password;
+}
+
 bool Person::id_match(int id)
 {
     if (this->id == id)
