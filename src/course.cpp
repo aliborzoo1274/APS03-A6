@@ -70,7 +70,19 @@ bool Course::prerequisite_met(string semester)
     else return false;
 }
 
+void Course::print(string p_name)
+{
+    cout << cid << ' ' << name << ' ' << capacity << ' ' << p_name << ' ' <<
+    time.week_day << ':' << time.start_time << '-' << time.end_time << ' ' <<
+    exam_date.year << '/' << exam_date.month << '/' << exam_date.day << ' ' << class_number << endl;
+}
+
 Date Course::get_exam_date()
 {
     return exam_date;
+}
+
+Person* Course::get_professor()
+{
+    return professor;
 }

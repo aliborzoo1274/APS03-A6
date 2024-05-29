@@ -13,7 +13,9 @@ public:
     void set_information(Person* professor, int capacity, int class_number, Time time, Date exam_date, int unique_id);
     bool has_conflict(Course* course);
     bool prerequisite_met(string semester);
+    void print(string p_name);
     Date get_exam_date();
+    Person* get_professor();
 private:
     int cid;
     int unique_id;

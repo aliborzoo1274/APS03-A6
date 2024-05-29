@@ -27,6 +27,7 @@ private:
     void get_personal_page();
     void get_post();
     void get_notif();
+    void get_my_courses();
     void post_method();
     void post_login();
     void post_logout();

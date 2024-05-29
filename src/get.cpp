@@ -14,6 +14,12 @@ void System::get_method()
         get_post();
     else if (command == "notification")
         get_notif();
+    else if (command == "my_courses")
+    {
+        if (!current_user->is_student())
+            error("Permission Denied");
+            get_my_courses();
+    }
     else
         error("Not Found");
 }
@@ -79,5 +85,11 @@ void System::get_post()
 void System::get_notif()
 {
     if (!current_user->show_notifications())
+        order_done("Empty");
+}
+
+void System::get_my_courses()
+{
+    if (!current_user->show_courses())
         order_done("Empty");
 }

@@ -184,6 +184,18 @@ bool Person::has_course_id_then_delete(int id)
     return false;
 }
 
+bool Person::show_courses()
+{
+    if (courses.size() == 0)
+        return false;
+    for (int i = 0; i < courses.size(); i++)
+    {
+        string p_name = courses[i]->get_professor()->name;
+        courses[i]->print(p_name);
+    }
+    return true;
+}
+
 void Person::get_course()
 {
     send_notification(id, name, "Get Course");
@@ -192,6 +204,11 @@ void Person::get_course()
 int Person::get_major_id()
 {
     return major_id;
+}
+
+string Person::get_name()
+{
+    return name;
 }
 
 string Person::get_semester_or_position()

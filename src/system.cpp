@@ -207,7 +207,6 @@ Course* System::get_course(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
     {
-        cout << offered_courses[i]->get_id() << endl;
         if (offered_courses[i]->unique_id_match(id))
             return offered_courses[i];
     }
