@@ -25,14 +25,7 @@ void System::delete_post()
         if (words[i] == "id")
         {
             id_in_line_found = true;
-            try
-            {
-                post_id = stoi(words[i + 1]);
-            }
-            catch (const invalid_argument& e)
-            {
-                error("Bad Request");
-            }
+            post_id = string_to_int(words[i + 1]);
         }
     }
     if (!id_in_line_found)

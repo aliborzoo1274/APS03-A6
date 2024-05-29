@@ -5,7 +5,7 @@ System::System(vector<Major> majors, vector<Person> persons, vector<Course> cour
     this->majors = majors;
     this->persons = persons;
     this->courses = courses;
-    Person* admin = new Person("admin", 0, ADMIN, ADMIN);
+    shared_ptr<Person> admin = make_shared<Person>("admin", 0, ADMIN, ADMIN);
     this->persons.push_back(*admin);
     for (int i = 0; i < this->persons.size() - 1; i++)
         this->persons[this->persons.size() - 1].connect_to_person(&this->persons[i]);
@@ -59,6 +59,83 @@ vector<string> System::read_line()
     while (cin.peek() != '\n' && (cin >> word))
         words.push_back(word);
     return words;
+}
+
+int System::string_to_int(string s)
+{
+    int i;
+    if (s.find('.') != string::npos)
+        error("Bad Request");
+    try
+    {
+        i = stoi(s);
+    }
+    catch (const invalid_argument& e)
+    {
+        error("Bad Request");
+    }
+    if (i < 0)
+        error("Bad Request");
+    return i;
+}
+
+Time System::adjust_time(string time_string)
+{
+    string parameter, week_day, s_or_e_time;
+    int start_time, end_time;
+    bool is_first_word = true;
+    stringstream time_stream(time_string);
+    while (getline(time_stream, parameter, ':'))
+    {
+        if (is_first_word)
+        {
+            week_day = parameter;
+            is_first_word = false;
+        }
+        else
+        {
+            is_first_word = true;
+            stringstream s_or_e_time_stream(parameter);
+            while (getline(s_or_e_time_stream, s_or_e_time, '-'))
+            {
+                if (is_first_word)
+                {
+                    start_time = stof(s_or_e_time);
+                    is_first_word = false;
+                }
+                else
+                    end_time = stof(s_or_e_time);
+            }
+        }
+    }
+    return {week_day, start_time, end_time};
+}
+
+Date System::adjust_date(string date_string)
+{
+    int year, month, day;
+    int date_parameter_counter = 0;
+    string date_parameter;
+    stringstream date_stream(date_string);
+    while (getline(date_stream, date_parameter, '/'))
+    {
+        switch (date_parameter_counter)
+        {
+        case 0:
+            year = stoi(date_parameter);
+            break;
+        case 1:
+            month = stoi(date_parameter);
+            break;
+        case 2:
+            day = stoi(date_parameter);
+            break;
+        default:
+            break;
+        }
+        date_parameter_counter++;
+    }
+    return {year, month, day};
 }
 
 void System::order_done(string message)

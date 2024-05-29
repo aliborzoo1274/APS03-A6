@@ -29,18 +29,7 @@ void System::get_personal_page()
         if (words[i] == "id")
         {
             id_in_line_found = true;
-            if (words[i + 1].find('.') != string::npos)
-                error("Bad Request");
-            try
-            {
-                person_id = stoi(words[i + 1]);
-            }
-            catch (const invalid_argument& e)
-            {
-                error("Bad Request");
-            }
-            if (person_id < 0)
-                error("Bad Request");
+            person_id = string_to_int(words[i + 1]);
         }
     }
     if (!id_in_line_found)
@@ -64,32 +53,14 @@ void System::get_post()
         if (words[i] == "id")
         {
             id_in_line_found = true;
-            if (words[i + 1].find('.') != string::npos)
-                error("Bad Request");
-            try
-            {
-                person_id = stoi(words[i + 1]);
-            }
-            catch (const invalid_argument& e)
-            {
-                error("Bad Request");
-            }
+            person_id = string_to_int(words[i + 1]);
             if (person_id <= 0)
                 error("Bad Request");
         }
         if (words[i] == "post_id")
         {
             post_id_in_line_found = true;
-            if (words[i + 1].find('.') != string::npos)
-                error("Bad Request");
-            try
-            {
-                post_id = stoi(words[i + 1]);
-            }
-            catch (const invalid_argument& e)
-            {
-                error("Bad Request");
-            }
+            post_id = string_to_int(words[i + 1]);
             if (post_id <= 0)
                 error("Bad Request");
         }

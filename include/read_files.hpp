@@ -6,6 +6,7 @@
 #include "person.hpp"
 
 class System;
+
 class Person;
 
 System* read_files(char* argv[]);

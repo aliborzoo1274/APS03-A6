@@ -14,8 +14,12 @@ private:
     vector<Major> majors;
     vector<Person> persons;
     vector<Course> courses;
+    vector<Course*> offered_courses;
     Person* current_user = nullptr;
     vector<string> read_line();
+    int string_to_int(string s);
+    Time adjust_time(string time_string);
+    Date adjust_date(string date_string);
     void order_done(string message);
     void error(string message);
     void get_method();
@@ -27,6 +31,7 @@ private:
     void post_logout();
     void post_post();
     void post_connect();
+    void post_course_offer();
     void put_method();
     void delete_method();
     void delete_post();

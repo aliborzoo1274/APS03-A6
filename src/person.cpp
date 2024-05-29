@@ -1,4 +1,5 @@
 #include "person.hpp"
+#include "course.hpp"
 
 Person::Person(string type, int id, string name, int major_id, string major_name, string semester_or_position, string password)
 {
@@ -29,6 +30,27 @@ bool Person::id_match(int id)
 bool Person::password_match(string password)
 {
     if (this->password == password)
+        return true;
+    else return false;
+}
+
+bool Person::is_admin()
+{
+    if (type == "admin")
+        return true;
+    else return false;
+}
+
+bool Person::is_student()
+{
+    if (type == "student")
+        return true;
+    else return false;
+}
+
+bool Person::is_professor()
+{
+    if (type == "professor")
         return true;
     else return false;
 }
@@ -109,4 +131,30 @@ bool Person::show_notifications()
         vector<Notification>().swap(notifications);
         return true;
     }
+}
+
+int Person::get_major_id()
+{
+    return major_id;
+}
+
+void Person::course_offering(Person* professor)
+{
+    for (auto c : connected_users)
+        c->notifications.push_back({professor->id, professor->name, "New Course Offering"});
+}
+
+void Person::set_course(Course* course)
+{
+    courses.push_back(course);
+}
+
+bool Person::is_busy(Course* course)
+{
+    for (int i = 0; i < courses.size(); i++)
+    {
+        if (courses[i]->has_conflict(course))
+            return true;
+    }
+    return false;
 }
