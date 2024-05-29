@@ -15,6 +15,7 @@ private:
     vector<Person> persons;
     vector<Course> courses;
     vector<Course*> offered_courses;
+    int unique_course_id_counter = 1;
     Person* current_user = nullptr;
     vector<string> read_line();
     int string_to_int(string s);
@@ -33,10 +34,12 @@ private:
     void post_connect();
     void post_course_offer();
     void put_method();
+    void put_my_courses();
     void delete_method();
     void delete_post();
     bool connected_before(int id);
     bool has_person_id_then_connect(int id);
     bool has_person_id_then_show_page(int id);
     bool has_person_id_and_post_id_then_show_post(int person_id, int post_id);
+    Course* get_course(int id);
 };

@@ -138,15 +138,9 @@ bool Person::show_notifications()
     }
 }
 
-int Person::get_major_id()
-{
-    return major_id;
-}
-
 void Person::course_offering(Person* professor)
 {
-    for (auto c : connected_users)
-        c->notifications.push_back({professor->id, professor->name, "New Course Offering"});
+    send_notification(professor->id, professor->name, "New Course Offering");
 }
 
 void Person::set_course(Course* course)
@@ -162,4 +156,31 @@ bool Person::is_busy(Course* course)
             return true;
     }
     return false;
+}
+
+bool Person::has_exam_date_conflict(Date date)
+{
+    for (int i = 0; i < courses.size(); i++)
+    {
+        if (courses[i]->get_exam_date().year == date.year &&
+            courses[i]->get_exam_date().month == date.month &&
+            courses[i]->get_exam_date().day == date.day)
+            return true;
+    }
+    return false;
+}
+
+void Person::get_course()
+{
+    send_notification(id, name, "Get Course");
+}
+
+int Person::get_major_id()
+{
+    return major_id;
+}
+
+string Person::get_semester_or_position()
+{
+    return semester_or_position;
 }

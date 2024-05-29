@@ -16,6 +16,13 @@ bool Course::id_match(int id)
     else return false;
 }
 
+bool Course::unique_id_match(int id)
+{
+    if (unique_id == id)
+        return true;
+    else return false;
+}
+
 bool Course::is_in_this_major(int id)
 {
     for (int i = 0; i < majors_id.size(); i++)
@@ -26,15 +33,14 @@ bool Course::is_in_this_major(int id)
     return false;
 }
 
-void Course::set_information(Person* professor, int capacity, int class_number, Time time, Date exam_date)
+void Course::set_information(Person* professor, int capacity, int class_number, Time time, Date exam_date, int unique_id)
 {
     this->professor = professor;
     this->capacity = capacity;
     this->class_number = class_number;
     this->time = time;
     this->exam_date = exam_date;
-    unique_id = unique_id_counter;
-    unique_id_counter++;
+    this->unique_id = unique_id;
 }
 
 bool Course::has_conflict(Course* course)
@@ -55,4 +61,16 @@ bool Course::has_conflict(Course* course)
         }
     }
     return false;
+}
+
+bool Course::prerequisite_met(string semester)
+{
+    if (stoi(semester) >= prerequisite)
+        return true;
+    else return false;
+}
+
+Date Course::get_exam_date()
+{
+    return exam_date;
 }

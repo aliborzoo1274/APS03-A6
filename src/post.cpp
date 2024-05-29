@@ -25,8 +25,12 @@ void System::post_method()
             post_post();
         else if (command == "connect")
             post_connect();
-        else if (command == "course_offer" && current_user->is_admin())
+        else if (command == "course_offer")
+        {
+            if (!current_user->is_admin())
+                error("Permission Denied");
             post_course_offer();
+        }
         else
             error("Not Found");
     }
@@ -215,13 +219,14 @@ void System::post_course_offer()
                     {
                         course_id_found = true;
                         Course* course = new Course(courses[j]);
-                        course->set_information(professor, capacity, class_number, time, exam_date);
+                        course->set_information(professor, capacity, class_number, time, exam_date, unique_course_id_counter);
                         if (course->is_in_this_major(professor->get_major_id()) && !professor->is_busy(course))
                         {
                             professor_can_offer_course = true;
                             offered_courses.push_back(course);
                             professor->set_course(course);
                             current_user->course_offering(professor);
+                            unique_course_id_counter++;
                         }
                         else delete course;
                     }

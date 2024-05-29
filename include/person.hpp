@@ -35,10 +35,13 @@ public:
     void show_page();
     bool has_post_then_show_it(int id);
     bool show_notifications();
-    int get_major_id();
     void course_offering(Person* professor);
     void set_course(Course* course);
     bool is_busy(Course* course);
+    bool has_exam_date_conflict(Date date);
+    void get_course();
+    int get_major_id();
+    string get_semester_or_position();
 private:
     string type;
     int id;
