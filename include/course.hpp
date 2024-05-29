@@ -14,7 +14,6 @@ public:
     bool has_conflict(Course* course);
     bool prerequisite_met(string semester);
     Date get_exam_date();
-    int get_id() {return unique_id;}
 private:
     int cid;
     int unique_id;

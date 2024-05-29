@@ -10,6 +10,12 @@ void System::delete_method()
         error("Bad Request");
     if (command == "post")
         delete_post();
+    else if (command == "my_courses")
+    {
+        if (!current_user->is_student())
+            error("Permission Denied");
+        delete_my_courses();
+    }
     else
         error("Not Found");
 }
@@ -31,6 +37,29 @@ void System::delete_post()
     if (!id_in_line_found)
         error("Bad Request");
     if (current_user->has_post_id_then_delete(post_id))
+        id_found = true;
+    if (!id_found)
+        error("Not Found");
+    order_done("OK");
+}
+
+void System::delete_my_courses()
+{
+    int course_id;
+    bool id_in_line_found = false;
+    bool id_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id")
+        {
+            id_in_line_found = true;
+            course_id = string_to_int(words[i + 1]);
+        }
+    }
+    if (!id_in_line_found)
+        error("Bad Request");
+    if (current_user->has_course_id_then_delete(course_id))
         id_found = true;
     if (!id_found)
         error("Not Found");

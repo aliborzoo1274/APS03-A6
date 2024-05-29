@@ -170,6 +170,20 @@ bool Person::has_exam_date_conflict(Date date)
     return false;
 }
 
+bool Person::has_course_id_then_delete(int id)
+{
+    for (int i = 0; i < courses.size(); i++)
+    {
+        if (courses[i]->unique_id_match(id))
+        {
+            courses.erase(courses.begin() + i);
+            send_notification(id, name, "Delete Course");
+            return true;
+        }
+    }
+    return false;
+}
+
 void Person::get_course()
 {
     send_notification(id, name, "Get Course");

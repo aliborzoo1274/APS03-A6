@@ -37,6 +37,7 @@ private:
     void put_my_courses();
     void delete_method();
     void delete_post();
+    void delete_my_courses();
     bool connected_before(int id);
     bool has_person_id_then_connect(int id);
     bool has_person_id_then_show_page(int id);

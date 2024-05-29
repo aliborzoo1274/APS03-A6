@@ -39,6 +39,7 @@ public:
     void set_course(Course* course);
     bool is_busy(Course* course);
     bool has_exam_date_conflict(Date date);
+    bool has_course_id_then_delete(int id);
     void get_course();
     int get_major_id();
     string get_semester_or_position();
