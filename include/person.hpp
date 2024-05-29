@@ -28,6 +28,7 @@ public:
     bool is_student();
     bool is_professor();
     void send_post(string title, string message);
+    void send_notification(int id, string name, string message);
     bool has_post_id_then_delete(int id);
     bool connected_before_to_you(int id);
     void connect_to_person(Person* person);

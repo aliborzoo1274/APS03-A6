@@ -60,8 +60,13 @@ void Person::send_post(string title, string message)
     int post_id = num_of_posts;
     posts.push_back({post_id, title, message});
     num_of_posts++;
+    send_notification(this->id, this->name, "New Post");
+}
+
+void Person::send_notification(int id, string name, string message)
+{
     for (auto c : connected_users)
-        c->notifications.push_back({this->id, this->name, "New Post"});
+        c->notifications.push_back({id, name, message});
 }
 
 bool Person::has_post_id_then_delete(int id)
