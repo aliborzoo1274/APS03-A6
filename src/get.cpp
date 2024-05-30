@@ -8,7 +8,9 @@ void System::get_method()
     cin >> question_mark;
     if (question_mark != '?')
         error("Bad Request");
-    if (command == "personal_page")
+    if (command == "courses")
+        get_courses();
+    else if (command == "personal_page")
         get_personal_page();
     else if (command == "post")
         get_post();
@@ -21,6 +23,38 @@ void System::get_method()
             get_my_courses();
     }
     else
+        error("Not Found");
+}
+
+void System::get_courses()
+{
+    int id;
+    bool id_in_line_found = false;
+    bool id_found = false;
+    vector<string> words = read_line();
+    if (!words.size())
+    {
+        id_in_line_found = true;
+        id_found = true;
+        if (!has_any_course_show_them())
+            order_done("Empty");
+    }
+    else
+    {
+        for (int i = 0; i < words.size(); i++)
+        {
+            if (words[i] == "id")
+            {
+                id_in_line_found = true;
+                id = string_to_int(words[i + 1]);
+            }
+        }
+    }
+    if (!id_in_line_found)
+        error("Bad Request");
+    if (has_course_id_then_show_inf(id))
+        id_found = true;
+    if (!id_found)
         error("Not Found");
 }
 

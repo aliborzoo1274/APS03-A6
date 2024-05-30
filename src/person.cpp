@@ -191,7 +191,7 @@ bool Person::show_courses()
     for (int i = 0; i < courses.size(); i++)
     {
         string p_name = courses[i]->get_professor()->name;
-        courses[i]->print(p_name);
+        courses[i]->print(p_name, "person");
     }
     return true;
 }

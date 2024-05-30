@@ -24,6 +24,7 @@ private:
     void order_done(string message);
     void error(string message);
     void get_method();
+    void get_courses();
     void get_personal_page();
     void get_post();
     void get_notif();
@@ -43,5 +44,7 @@ private:
     bool has_person_id_then_connect(int id);
     bool has_person_id_then_show_page(int id);
     bool has_person_id_and_post_id_then_show_post(int person_id, int post_id);
+    bool has_any_course_show_them();
+    bool has_course_id_then_show_inf(int id);
     Course* get_course(int id);
 };

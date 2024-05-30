@@ -70,11 +70,14 @@ bool Course::prerequisite_met(string semester)
     else return false;
 }
 
-void Course::print(string p_name)
+void Course::print(string p_name, string called_by)
 {
-    cout << cid << ' ' << name << ' ' << capacity << ' ' << p_name << ' ' <<
-    time.week_day << ':' << time.start_time << '-' << time.end_time << ' ' <<
-    exam_date.year << '/' << exam_date.month << '/' << exam_date.day << ' ' << class_number << endl;
+    cout << cid << ' ' << name << ' ' << capacity << ' ' << p_name;
+    if (called_by == "system_all")
+        cout << endl;
+    else if (called_by == "system_single" || called_by == "person")
+        cout << ' ' << time.week_day << ':' << time.start_time << '-' << time.end_time << ' ' <<
+        exam_date.year << '/' << exam_date.month << '/' << exam_date.day << ' ' << class_number << endl;
 }
 
 Date Course::get_exam_date()

@@ -203,6 +203,32 @@ bool System::has_person_id_and_post_id_then_show_post(int person_id, int post_id
     return false;
 }
 
+bool System::has_any_course_show_them()
+{
+    if (offered_courses.size() == 0)
+        return false;
+    for (int i = 0; i < offered_courses.size(); i++)
+    {
+        string p_name = offered_courses[i]->get_professor()->get_name();
+        offered_courses[i]->print(p_name, "system_all");
+    }
+    return true;
+}
+
+bool System::has_course_id_then_show_inf(int id)
+{
+    for (int i = 0; i < offered_courses.size(); i++)
+    {
+        if (offered_courses[i]->id_match(id))
+        {
+            string p_name = offered_courses[i]->get_professor()->get_name();
+            offered_courses[i]->print(p_name, "system_single");
+            return true;
+        }
+    }
+    return false;
+}
+
 Course* System::get_course(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
