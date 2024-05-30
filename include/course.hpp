@@ -14,6 +14,7 @@ public:
     bool has_conflict(Course* course);
     bool prerequisite_met(string semester);
     void print(string p_name, string called_by);
+    string get_name();
     Date get_exam_date();
     Person* get_professor();
 private:

@@ -32,7 +32,7 @@ void System::get_courses()
     bool id_in_line_found = false;
     bool id_found = false;
     vector<string> words = read_line();
-    if (!words.size())
+    if (words.size() == 0)
     {
         id_in_line_found = true;
         id_found = true;

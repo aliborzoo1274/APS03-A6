@@ -80,6 +80,11 @@ void Course::print(string p_name, string called_by)
         exam_date.year << '/' << exam_date.month << '/' << exam_date.day << ' ' << class_number << endl;
 }
 
+string Course::get_name()
+{
+    return name;
+}
+
 Date Course::get_exam_date()
 {
     return exam_date;

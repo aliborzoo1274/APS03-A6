@@ -103,12 +103,22 @@ void Person::connect_to_person(Person* person)
 
 void Person::show_page()
 {
-    if (type == "student")
-        cout << name << ' ' << major_name << ' ' << semester_or_position << endl;
-    else if (type == "professor")
-        cout << name << ' ' << semester_or_position << endl;
-    for (int i = posts.size() - 1; i >= 0; i--)
-        cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
+    if (type == "admin")
+        cout << ADMIN << endl;
+    else
+    {
+        cout << name << ' ' << major_name << ' ' << semester_or_position;
+        if (courses.size() != 0)
+        {
+            cout << ' ';
+            for (int i = 0; i < courses.size() - 1; i++)
+                cout << courses[i]->get_name() << ',';
+            cout << courses[courses.size() - 1]->get_name() << endl;
+        }
+        else cout << endl;
+        for (int i = posts.size() - 1; i >= 0; i--)
+            cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << endl;
+    }
 }
 
 bool Person::has_post_then_show_it(int id)
