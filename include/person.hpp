@@ -42,6 +42,7 @@ public:
     bool has_exam_date_conflict(Date date);
     bool has_course_id_then_delete(int id);
     bool show_courses();
+    void set_profile_photo(string photo_address);
     void get_course();
     int get_major_id();
     string get_name();
@@ -54,6 +55,7 @@ private:
     string major_name;
     string semester_or_position;
     string password;
+    string profile_photo_address;
     vector<Post> posts;
     int num_of_posts = 1;
     vector<Person*> connected_users;

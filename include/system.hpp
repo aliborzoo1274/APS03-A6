@@ -35,6 +35,7 @@ private:
     void post_post();
     void post_connect();
     void post_course_offer();
+    void post_profile_photo();
     void put_method();
     void put_my_courses();
     void delete_method();

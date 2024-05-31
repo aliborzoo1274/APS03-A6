@@ -13,7 +13,8 @@ void System::post_method()
         if (command == "login")
             post_login();
         else if (command != "logout" && command != "post" &&
-                 command != "connect" && command != "course_offer")
+                 command != "connect" && command != "course_offer" &&
+                 command != "profile_photo")
             error("Not Found");
         else
             error("Permission Denied");
@@ -34,6 +35,8 @@ void System::post_method()
                 error("Permission Denied");
             post_course_offer();
         }
+        else if (command == "profile_photo")
+            post_profile_photo();
         else
             error("Not Found");
     }
@@ -253,4 +256,20 @@ void System::post_course_offer()
     if (!professor_id_found || !professor_can_offer_course)
         error("Permission Denied");
     order_done ("OK");
+}
+
+void System::post_profile_photo()
+{
+    bool photo_found;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "photo" && !photo_found)
+        {
+            photo_found = true;
+            current_user->set_profile_photo(words[i + 1]);
+        }
+    }
+    if (!photo_found)
+        error("Bad Request");
 }

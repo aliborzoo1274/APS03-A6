@@ -219,6 +219,11 @@ bool Person::show_courses()
     return true;
 }
 
+void Person::set_profile_photo(string photo_address)
+{
+    profile_photo_address = photo_address;
+}
+
 void Person::get_course()
 {
     send_notification(id, name, "Get Course");
