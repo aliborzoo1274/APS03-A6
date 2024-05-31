@@ -12,6 +12,9 @@ void System::post_method()
     {
         if (command == "login")
             post_login();
+        else if (command != "logout" && command != "post" &&
+                 command != "connect" && command != "course_offer")
+            error("Not Found");
         else
             error("Permission Denied");
     }
@@ -47,12 +50,12 @@ void System::post_login()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             id = string_to_int(words[i + 1]);
         }
-        else if (words[i] == "password")
+        else if (words[i] == "password" && !password_in_line_found)
         {
             password_in_line_found = true;
             password = words[i + 1];
@@ -96,7 +99,7 @@ void System::post_post()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "title")
+        if (words[i] == "title" && !title_found)
         {
             i++;
             while (i < words.size() && words[i].back() != '"')
@@ -109,7 +112,7 @@ void System::post_post()
                 title_found = true;
             }
         }
-        else if (words[i] == "message")
+        else if (words[i] == "message" && !message_found)
         {
             i++;
             while (i < words.size() && words[i].back() != '"')
@@ -137,7 +140,7 @@ void System::post_connect()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             person_id = string_to_int(words[i + 1]);
@@ -173,32 +176,32 @@ void System::post_course_offer()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "course_id")
+        if (words[i] == "course_id" && !course_id_in_line_found)
         {
             course_id_in_line_found = true;
             course_id = string_to_int(words[i + 1]);
         }
-        else if (words[i] == "professor_id")
+        else if (words[i] == "professor_id" && !professor_id_in_line_found)
         {
             professor_id_in_line_found = true;
             professor_id = string_to_int(words[i + 1]);
         }
-        else if (words[i] == "capacity")
+        else if (words[i] == "capacity" && !capacity_in_line_found)
         {
             capacity_in_line_found = true;
             capacity = string_to_int(words[i + 1]);
         }
-        else if (words[i] == "time")
+        else if (words[i] == "time" && !time_in_line_found)
         {
             time_in_line_found = true;
             time = adjust_time(words[i + 1]);
         }
-        else if (words[i] == "exam_date")
+        else if (words[i] == "exam_date" && !exam_date_in_line_found)
         {
             exam_date_in_line_found = true;
             exam_date = adjust_date(words[i + 1]);
         }
-        else if (words[i] == "class_number")
+        else if (words[i] == "class_number" && !class_number_in_line_found)
         {
             class_number_in_line_found = true;
             class_number = string_to_int(words[i + 1]);

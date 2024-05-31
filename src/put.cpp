@@ -8,14 +8,16 @@ void System::put_method()
     cin >> question_mark;
     if (question_mark != '?')
         error("Bad Request");
+    if (command != "my_courses")
+        error("Not Found");
+    if (current_user == nullptr)
+        error("Permission Denied");
     if (command == "my_courses")
     {
         if (!current_user->is_student())
             error("Permission Denied");
         put_my_courses();
     }
-    else
-        error("Not Found");
 }
 
 void System::put_my_courses()
@@ -28,7 +30,7 @@ void System::put_my_courses()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             course_id = string_to_int(words[i + 1]);

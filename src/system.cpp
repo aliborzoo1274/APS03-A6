@@ -19,29 +19,16 @@ void System::answer_command()
         {
             string command_method;
             cin >> command_method;
-            if (current_user != nullptr)
-            {
-                if (command_method == "GET")
-                    get_method();
-                else if (command_method == "POST")
-                    post_method();
-                else if (command_method == "PUT")
-                    put_method();
-                else if (command_method == "DELETE")
-                    delete_method();
-                else
-                    error("Bad Request");
-            }
+            if (command_method == "GET")
+                get_method();
+            else if (command_method == "POST")
+                post_method();
+            else if (command_method == "PUT")
+                put_method();
+            else if (command_method == "DELETE")
+                delete_method();
             else
-            {
-                if (command_method == "POST")
-                    post_method();
-                else if (command_method != "GET" && command_method != "PUT" &&
-                         command_method != "DELETE")
-                    error("Bad Request");
-                else
-                    error("Permission Denied");
-            }
+                error("Bad Request");
         }
         catch (const runtime_error& e)
         {

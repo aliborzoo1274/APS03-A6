@@ -8,6 +8,10 @@ void System::delete_method()
     cin >> question_mark;
     if (question_mark != '?')
         error("Bad Request");
+    if (command != "post" && command != "my_courses")
+        error("Not Found");
+    if (current_user == nullptr)
+        error("Permission Denied");
     if (command == "post")
         delete_post();
     else if (command == "my_courses")
@@ -16,8 +20,6 @@ void System::delete_method()
             error("Permission Denied");
         delete_my_courses();
     }
-    else
-        error("Not Found");
 }
 
 void System::delete_post()
@@ -28,7 +30,7 @@ void System::delete_post()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             post_id = string_to_int(words[i + 1]);
@@ -51,7 +53,7 @@ void System::delete_my_courses()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             course_id = string_to_int(words[i + 1]);

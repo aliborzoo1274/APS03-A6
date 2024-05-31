@@ -8,6 +8,11 @@ void System::get_method()
     cin >> question_mark;
     if (question_mark != '?')
         error("Bad Request");
+    if (command != "courses" && command != "personal_page" &&
+        command != "post" && command != "notification" && command != "my_courses")
+        error("Not Found");
+    if (current_user == nullptr)
+        error("Permission Denied");
     if (command == "courses")
         get_courses();
     else if (command == "personal_page")
@@ -22,8 +27,6 @@ void System::get_method()
             error("Permission Denied");
             get_my_courses();
     }
-    else
-        error("Not Found");
 }
 
 void System::get_courses()
@@ -43,7 +46,7 @@ void System::get_courses()
     {
         for (int i = 0; i < words.size(); i++)
         {
-            if (words[i] == "id")
+            if (words[i] == "id" && !id_in_line_found)
             {
                 id_in_line_found = true;
                 id = string_to_int(words[i + 1]);
@@ -66,7 +69,7 @@ void System::get_personal_page()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             person_id = string_to_int(words[i + 1]);
@@ -90,14 +93,14 @@ void System::get_post()
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
-        if (words[i] == "id")
+        if (words[i] == "id" && !id_in_line_found)
         {
             id_in_line_found = true;
             person_id = string_to_int(words[i + 1]);
-            if (person_id <= 0)
+            if (person_id < 0)
                 error("Bad Request");
         }
-        if (words[i] == "post_id")
+        if (words[i] == "post_id" && !post_id_in_line_found)
         {
             post_id_in_line_found = true;
             post_id = string_to_int(words[i + 1]);
