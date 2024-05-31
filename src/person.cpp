@@ -55,10 +55,10 @@ bool Person::is_professor()
     else return false;
 }
 
-void Person::send_post(string title, string message)
+void Person::send_post(string title, string message, string image_address)
 {
     int post_id = num_of_posts;
-    posts.push_back({post_id, title, message});
+    posts.push_back({post_id, title, message, image_address});
     num_of_posts++;
     send_notification(this->id, this->name, "New Post");
 }

@@ -94,8 +94,10 @@ void System::post_logout()
 void System::post_post()
 {
     string title, message;
+    string image_address = "empty";
     bool title_found = false;
     bool message_found = false;
+    bool image_found = false;
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
@@ -125,10 +127,15 @@ void System::post_post()
                 message_found = true;
             }
         }
+        else if (words[i] == "image" && !image_found)
+        {
+            image_found = true;
+            image_address = words[i + 1];
+        }
     }
     if (!title_found || !message_found)
         error("Bad Request");
-    current_user->send_post(title, message);
+    current_user->send_post(title, message, image_address);
     order_done("OK");
 }
 
