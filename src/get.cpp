@@ -9,8 +9,8 @@ void System::get_method()
     if (question_mark != '?')
         error("Bad Request");
     if (command != "courses" && command != "personal_page" &&
-        command != "post" && command != "notification" && command != "my_courses"
-        && command != "hey")
+        command != "post" && command != "notification" && command != "my_courses" &&
+        command != "course_channel")
         error("Not Found");
     if (current_user == nullptr)
         error("Permission Denied");
@@ -24,6 +24,8 @@ void System::get_method()
         get_notif();
     else if (command == "my_courses")
         get_my_courses();
+    else if (command == "course_channel")
+        get_course_channel();
 }
 
 void System::get_courses()
@@ -135,4 +137,26 @@ void System::get_my_courses()
         error("Permission Denied");
     if (!student->show_courses())
         order_done("Empty");
+}
+
+void System::get_course_channel()
+{
+    int id;
+    bool id_in_line_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id" && !id_in_line_found)
+        {
+            id_in_line_found = true;
+            id = string_to_int(words[i + 1]);
+        }
+    }
+    if (!id_in_line_found)
+        error("Bad Request");
+    if (!has_course_id(id))
+        error("Not Found");
+    auto person = dynamic_pointer_cast<Person>(current_user);
+    if (person == nullptr || !person->allowed_then_show_channel(id));
+        error("Permission Denied");
 }

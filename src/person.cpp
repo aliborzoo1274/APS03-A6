@@ -83,6 +83,19 @@ bool Person::allowed_then_course_post(int course_id, string title, string messag
     return false;
 }
 
+bool Person::allowed_then_show_channel(int course_id)
+{
+    for (int i = 0; i < courses.size(); i++)
+    {
+        if (courses[i]->id_match(course_id))
+        {
+            courses[i]->show_posts();
+            return true;
+        }
+    }
+    return false;
+}
+
 int Person::get_id()
 {
     return id;

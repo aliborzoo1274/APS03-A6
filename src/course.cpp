@@ -98,6 +98,16 @@ void Course::send_course_post(Person* author, string title, string message, stri
     }
 }
 
+void Course::show_posts()
+{
+    print("person");
+    for (int i = channel_posts.size() - 1; i >= 0; i--)
+    {
+        cout << channel_posts[i].post.post_id << ' ' << channel_posts[i].author_name << ' ' <<
+        '"' << channel_posts[i].post.title << '"' << endl;
+    }
+}
+
 string Course::get_name()
 {
     return name;
