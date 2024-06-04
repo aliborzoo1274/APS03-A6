@@ -205,17 +205,23 @@ bool System::has_any_course_show_them()
     return true;
 }
 
-bool System::has_course_id_then_show_inf(int id)
+bool System::has_course_id(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
     {
         if (offered_courses[i]->id_match(id))
-        {
-            offered_courses[i]->print("system_single");
             return true;
-        }
     }
     return false;
+}
+
+void System::show_course_inf(int id)
+{
+    for (int i = 0; i < offered_courses.size(); i++)
+    {
+        if (offered_courses[i]->id_match(id))
+            offered_courses[i]->print("system_single");
+    }
 }
 
 shared_ptr<Course> System::get_course(int id)

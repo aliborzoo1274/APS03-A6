@@ -13,6 +13,7 @@ public:
     bool has_time_conflict(shared_ptr<Course> course);
     void take_course(shared_ptr<Course> course);
     bool show_courses();
+    bool allowed_then_course_post(int course_id, string title, string message, string image_address);
     int get_id();
     string get_name();
     int get_major_id();

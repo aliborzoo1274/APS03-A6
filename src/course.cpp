@@ -43,6 +43,11 @@ void Course::set_information(shared_ptr<Professor> professor, int capacity, int 
     this->unique_id = unique_id;
 }
 
+void Course::add_person(shared_ptr<Person> person)
+{
+    persons.push_back(person);
+}
+
 bool Course::has_conflict(shared_ptr<Course> course)
 {
     if (time.week_day == course->time.week_day)
@@ -78,6 +83,19 @@ void Course::print(string called_by)
     else if (called_by == "system_single" || called_by == "person")
         cout << ' ' << time.week_day << ':' << time.start_time << '-' << time.end_time << ' ' <<
         exam_date.year << '/' << exam_date.month << '/' << exam_date.day << ' ' << class_number << endl;
+}
+
+void Course::send_course_post(Person* author, string title, string message, string image_address)
+{
+    int post_id = num_of_course_posts;
+    num_of_course_posts++;
+    Post post = {post_id, title, message, image_address};
+    channel_posts.push_back({post, author->get_name()});
+    for (int i = 0; i < persons.size(); i++)
+    {
+        if (persons[i]->get_id() != author->get_id())
+            persons[i]->set_notification(cid, name, "New Course Post");
+    }
 }
 
 string Course::get_name()

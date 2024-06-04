@@ -52,8 +52,11 @@ void System::get_courses()
     }
     if (!id_in_line_found)
         error("Bad Request");
-    if (has_course_id_then_show_inf(id))
+    if (has_course_id(id))
+    {
         id_found = true;
+        show_course_inf(id);
+    }
     if (!id_found)
         error("Not Found");
 }

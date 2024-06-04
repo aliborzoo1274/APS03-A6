@@ -14,7 +14,7 @@ void System::post_method()
             post_login();
         else if (command != "logout" && command != "post" &&
                  command != "connect" && command != "course_offer" &&
-                 command != "profile_photo")
+                 command != "profile_photo" && command != "course_post")
             error("Not Found");
         else
             error("Permission Denied");
@@ -33,6 +33,8 @@ void System::post_method()
             post_course_offer();
         else if (command == "profile_photo")
             post_profile_photo();
+        else if (command == "course_post")
+            post_course_post();
         else
             error("Not Found");
     }
@@ -231,6 +233,7 @@ void System::post_course_offer()
                         course_id_found = true;
                         auto course = make_shared<Course>(courses[j]);
                         course->set_information(professor, capacity, class_number, time, exam_date, unique_course_id_counter);
+                        course->add_person(professor);
                         if (course->is_in_this_major(professor->get_major_id()) && !professor->has_time_conflict(course))
                         {
                             professor_can_offer_course = true;
@@ -269,4 +272,63 @@ void System::post_profile_photo()
     }
     if (!photo_found)
         error("Bad Request");
+}
+
+void System::post_course_post()
+{
+    int id;
+    string title, message;
+    string image_address = "empty";
+    bool id_in_line_found = false;
+    bool title_found = false;
+    bool message_found = false;
+    bool image_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id" && !id_in_line_found)
+        {
+            id_in_line_found = true;
+            id = string_to_int(words[i + 1]);
+        }
+        else if (words[i] == "title" && !title_found)
+        {
+            i++;
+            while (i < words.size() && words[i].back() != '"')
+                title += words[i++] + ' ';
+            if (i < words.size())
+                title += words[i];
+            if (title.front() == '"' && title.back() == '"')
+            {
+                title = title.substr(1, title.size() - 2);
+                title_found = true;
+            }
+        }
+        else if (words[i] == "message" && !message_found)
+        {
+            i++;
+            while (i < words.size() && words[i].back() != '"')
+                message += words[i++] + ' ';
+            if (i < words.size())
+                message += words[i];
+            if (message.front() == '"' && message.back() == '"')
+            {
+                message = message.substr(1, message.size() - 2);
+                message_found = true;
+            }
+        }
+        else if (words[i] == "image" && !image_found)
+        {
+            image_found = true;
+            image_address = words[i + 1];
+        }
+    }
+    if (!title_found || !message_found || !id_in_line_found)
+        error("Bad Request");
+    if (!has_course_id(id))
+        error("Not Found");
+    auto person = dynamic_pointer_cast<Person>(current_user);
+    if (person == nullptr || !person->allowed_then_course_post(id, title, message, image_address));
+        error("Permission Denied");
+    order_done("OK");
 }

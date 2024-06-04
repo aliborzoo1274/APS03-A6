@@ -70,6 +70,19 @@ bool Person::show_courses()
     return true;
 }
 
+bool Person::allowed_then_course_post(int course_id, string title, string message, string image_address)
+{
+    for (int i = 0; i < courses.size(); i++)
+    {
+        if (courses[i]->id_match(course_id))
+        {
+            courses[i]->send_course_post(this, title, message, image_address);
+            return true;
+        }
+    }
+    return false;
+}
+
 int Person::get_id()
 {
     return id;

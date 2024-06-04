@@ -37,6 +37,7 @@ private:
     void post_connect();
     void post_course_offer();
     void post_profile_photo();
+    void post_course_post();
     void put_method();
     void put_my_courses();
     void delete_method();
@@ -47,6 +48,7 @@ private:
     bool has_user_id_then_show_page(int id);
     bool has_user_id_and_post_id_then_show_post(int person_id, int post_id);
     bool has_any_course_show_them();
-    bool has_course_id_then_show_inf(int id);
+    bool has_course_id(int id);
+    void show_course_inf(int id);
     shared_ptr<Course> get_course(int id);
 };

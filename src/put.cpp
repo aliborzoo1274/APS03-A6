@@ -43,6 +43,7 @@ void System::put_my_courses()
                 {
                     student_can_take_course = true;
                     student->take_course(course);
+                    course->add_person(student);
                 }
             }
         }
