@@ -1,64 +1,27 @@
 #pragma once
 #include "global.hpp"
-
-struct Post
-{
-    int post_id;
-    string title;
-    string message;
-    string image_address;
-};
-
-struct Notification
-{
-    int person_id;
-    string person_name;
-    string message;
-};
+#include "user.hpp"
 
 class Course;
 
-class Person
+class Person : public User
 {
 public:
-    Person(string type, int id, string name, int major_id, string major_name, string semester_or_position, string password);
-    Person(string type, int id, string name, string password);
-    bool id_match(int id);
-    bool password_match(string password);
-    bool is_admin();
-    bool is_student();
-    bool is_professor();
-    void send_post(string title, string message, string image_address);
-    void send_notification(int id, string name, string message);
-    bool has_post_id_then_delete(int id);
-    bool connected_before_to_you(int id);
-    void connect_to_person(Person* person);
-    void show_page();
-    bool has_post_then_show_it(int id);
+    Person(int id, string name, int major_id, string major_name, string password);
+    void set_notification(int id, string name, string message);
     bool show_notifications();
-    void course_offering(Person* professor);
-    void set_course(Course* course);
-    bool is_busy(Course* course);
-    bool has_exam_date_conflict(Date date);
-    bool has_course_id_then_delete(int id);
+    bool has_time_conflict(shared_ptr<Course> course);
+    void take_course(shared_ptr<Course> course);
     bool show_courses();
-    void set_profile_photo(string photo_address);
-    void get_course();
-    int get_major_id();
+    int get_id();
     string get_name();
-    string get_semester_or_position();
-private:
-    string type;
-    int id;
-    string name;
+    int get_major_id();
+protected:
     int major_id;
     string major_name;
-    string semester_or_position;
-    string password;
-    string profile_photo_address;
-    vector<Post> posts;
-    int num_of_posts = 1;
-    vector<Person*> connected_users;
     vector<Notification> notifications;
-    vector<Course*> courses;
+    vector<shared_ptr<Course>> courses;
+    virtual void print_spec() = 0;
+    virtual void print_inf();
+    void print_courses();
 };

@@ -9,7 +9,8 @@ void System::get_method()
     if (question_mark != '?')
         error("Bad Request");
     if (command != "courses" && command != "personal_page" &&
-        command != "post" && command != "notification" && command != "my_courses")
+        command != "post" && command != "notification" && command != "my_courses"
+        && command != "hey")
         error("Not Found");
     if (current_user == nullptr)
         error("Permission Denied");
@@ -22,11 +23,7 @@ void System::get_method()
     else if (command == "notification")
         get_notif();
     else if (command == "my_courses")
-    {
-        if (!current_user->is_student())
-            error("Permission Denied");
-            get_my_courses();
-    }
+        get_my_courses();
 }
 
 void System::get_courses()
@@ -77,7 +74,7 @@ void System::get_personal_page()
     }
     if (!id_in_line_found)
         error("Bad Request");
-    if (has_person_id_then_show_page(person_id))
+    if (has_user_id_then_show_page(person_id))
         id_found = true;
     if (!id_found)
         error("Not Found");
@@ -110,7 +107,7 @@ void System::get_post()
     }
     if (!id_in_line_found || !post_id_in_line_found)
         error("Bad Request");
-    if (has_person_id_and_post_id_then_show_post(person_id, post_id))
+    if (has_user_id_and_post_id_then_show_post(person_id, post_id))
     {
         id_found = true;
         post_id_found = true;
@@ -121,12 +118,18 @@ void System::get_post()
 
 void System::get_notif()
 {
-    if (!current_user->show_notifications())
+    auto current_person = dynamic_pointer_cast<Person>(current_user);
+    if (current_person == nullptr)
+        error("Permission Denied");
+    if (!current_person->show_notifications())
         order_done("Empty");
 }
 
 void System::get_my_courses()
 {
-    if (!current_user->show_courses())
+    auto student = dynamic_pointer_cast<Student>(current_user);
+    if (student == nullptr)
+        error("Permission Denied");
+    if (!student->show_courses())
         order_done("Empty");
 }

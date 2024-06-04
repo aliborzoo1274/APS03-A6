@@ -1,14 +1,16 @@
 #include "system.hpp"
 
-System::System(vector<Major> majors, vector<Person> persons, vector<Course> courses)
+System::System(vector<Major> majors, vector<shared_ptr<Person>> persons, vector<Course> courses)
 {
     this->majors = majors;
-    this->persons = persons;
     this->courses = courses;
-    shared_ptr<Person> admin = make_shared<Person>("admin", 0, ADMIN, ADMIN);
-    this->persons.push_back(*admin);
-    for (int i = 0; i < this->persons.size() - 1; i++)
-        this->persons[this->persons.size() - 1].connect_to_person(&this->persons[i]);
+    auto admin = make_shared<Admin>(0, ADMIN, ADMIN);
+    for (auto person : persons)
+    {
+        admin->connect_to_person(person);
+        users.push_back(person);
+    }
+    users.push_back(admin);
 }
 
 void System::answer_command()
@@ -152,38 +154,42 @@ bool System::connected_before(int id)
 
 bool System::has_person_id_then_connect(int id)
 {
-    for (int i = 0; i < persons.size(); i++)
+    for (int i = 0; i < users.size(); i++)
     {
-        if (persons[i].id_match(id))
+        if (users[i]->id_match(id))
         {
-            current_user->connect_to_person(&persons[i]);
-            persons[i].connect_to_person(current_user);
+            auto person = dynamic_pointer_cast<Person>(users[i]);
+            auto current_person = dynamic_pointer_cast<Person>(current_user);
+            if (person == nullptr) continue;
+            if (current_person == nullptr) return false;
+            current_user->connect_to_person(person);
+            person->connect_to_person(current_person);
             return true;
         }
     }
     return false;
 }
 
-bool System::has_person_id_then_show_page(int id)
+bool System::has_user_id_then_show_page(int id)
 {
-    for (int i = 0; i < persons.size(); i++)
+    for (int i = 0; i < users.size(); i++)
     {
-        if (persons[i].id_match(id))
+        if (users[i]->id_match(id))
         {
-            persons[i].show_page();
+            users[i]->show_page();
             return true;
         }
     }
     return false;
 }
 
-bool System::has_person_id_and_post_id_then_show_post(int person_id, int post_id)
+bool System::has_user_id_and_post_id_then_show_post(int user_id, int post_id)
 {
-    for (int i = 0; i < persons.size(); i++)
+    for (int i = 0; i < users.size(); i++)
     {
-        if (persons[i].id_match(person_id))
+        if (users[i]->id_match(user_id))
         {
-            if (persons[i].has_post_then_show_it(post_id))
+            if (users[i]->has_post_then_show_it(post_id))
                 return true;
         }
     }
@@ -194,11 +200,8 @@ bool System::has_any_course_show_them()
 {
     if (offered_courses.size() == 0)
         return false;
-    for (int i = 0; i < offered_courses.size(); i++)
-    {
-        string p_name = offered_courses[i]->get_professor()->get_name();
-        offered_courses[i]->print(p_name, "system_all");
-    }
+    for (auto course : offered_courses)
+        course->print("system_all");
     return true;
 }
 
@@ -208,15 +211,14 @@ bool System::has_course_id_then_show_inf(int id)
     {
         if (offered_courses[i]->id_match(id))
         {
-            string p_name = offered_courses[i]->get_professor()->get_name();
-            offered_courses[i]->print(p_name, "system_single");
+            offered_courses[i]->print("system_single");
             return true;
         }
     }
     return false;
 }
 
-Course* System::get_course(int id)
+shared_ptr<Course> System::get_course(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
     {

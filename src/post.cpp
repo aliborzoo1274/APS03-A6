@@ -30,11 +30,7 @@ void System::post_method()
         else if (command == "connect")
             post_connect();
         else if (command == "course_offer")
-        {
-            if (!current_user->is_admin())
-                error("Permission Denied");
             post_course_offer();
-        }
         else if (command == "profile_photo")
             post_profile_photo();
         else
@@ -47,9 +43,9 @@ void System::post_login()
     int id;
     string password;
     bool id_in_line_found = false;
-    bool person_found = false;
+    bool user_found = false;
     bool password_in_line_found = false;
-    bool person_is_allowed = false;
+    bool user_is_allowed = false;
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
@@ -64,26 +60,26 @@ void System::post_login()
             password = words[i + 1];
         }
     }
-    for (int i = 0; i < persons.size(); i++)
+    for (int i = 0; i < users.size(); i++)
     {
-        if (persons[i].id_match(id))
+        if (users[i]->id_match(id))
         {
-            person_found = true;
-            if (persons[i].password_match(password))
+            user_found = true;
+            if (users[i]->password_match(password))
             {
-                person_is_allowed = true;
-                current_user = &persons[i];
+                user_is_allowed = true;
+                current_user = users[i];
                 order_done("OK");
             }
         }
     }
     if (!id_in_line_found || !password_in_line_found)
         error("Bad Request");
-    if (!person_found)
+    if (!user_found)
         error("Not Found");
     else
     {
-        if (!person_is_allowed)
+        if (!user_is_allowed)
             error("Permission Denied");
     }
 }
@@ -172,17 +168,19 @@ void System::post_course_offer()
     int course_id, professor_id, capacity, class_number;
     Time time;
     Date exam_date;
-    Person* professor = nullptr;
     bool course_id_in_line_found = false;
     bool course_id_found = false;
     bool professor_id_in_line_found = false;
-    bool person_id_found = false;
+    bool user_id_found = false;
     bool professor_id_found = false;
     bool professor_can_offer_course = false;
     bool capacity_in_line_found = false;
     bool time_in_line_found = false;
     bool exam_date_in_line_found = false;
     bool class_number_in_line_found = false;
+    auto admin = dynamic_pointer_cast<Admin>(current_user);
+    if (admin == nullptr)
+        error("Permission Denied");
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
@@ -217,31 +215,30 @@ void System::post_course_offer()
             class_number = string_to_int(words[i + 1]);
         }
     }
-    for (int i = 0; i < persons.size(); i++)
+    for (int i = 0; i < users.size(); i++)
     {
-        if (persons[i].id_match(professor_id))
+        if (users[i]->id_match(professor_id))
         {
-            person_id_found = true;
-            if (persons[i].is_professor())
+            user_id_found = true;
+            auto professor = dynamic_pointer_cast<Professor>(users[i]);
+            if (professor != nullptr)
             {
                 professor_id_found = true;
-                professor = &persons[i];
                 for (int j = 0; j < courses.size(); j++)
                 {
                     if (courses[j].id_match(course_id))
                     {
                         course_id_found = true;
-                        Course* course = new Course(courses[j]);
+                        auto course = make_shared<Course>(courses[j]);
                         course->set_information(professor, capacity, class_number, time, exam_date, unique_course_id_counter);
-                        if (course->is_in_this_major(professor->get_major_id()) && !professor->is_busy(course))
+                        if (course->is_in_this_major(professor->get_major_id()) && !professor->has_time_conflict(course))
                         {
                             professor_can_offer_course = true;
                             offered_courses.push_back(course);
-                            professor->set_course(course);
-                            current_user->course_offering(professor);
+                            professor->take_course(course);
+                            admin->course_offering(professor);
                             unique_course_id_counter++;
                         }
-                        else delete course;
                     }
                 }
             }
@@ -251,7 +248,7 @@ void System::post_course_offer()
         !capacity_in_line_found || !time_in_line_found ||
         !exam_date_in_line_found || !class_number_in_line_found)
         error("Bad Request");
-    if (!course_id_found || !person_id_found)
+    if (!course_id_found || !user_id_found)
         error("Not Found");
     if (!professor_id_found || !professor_can_offer_course)
         error("Permission Denied");

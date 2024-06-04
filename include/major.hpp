@@ -5,7 +5,7 @@ class Major
 {
 public:
     Major(int mid, string name);
-    int get_id();
+    bool match_id(int id);
     string get_name();
 private:
     int mid;

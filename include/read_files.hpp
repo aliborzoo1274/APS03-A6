@@ -4,17 +4,19 @@
 #include "major.hpp"
 #include "course.hpp"
 #include "person.hpp"
+#include "student.hpp"
+#include "professor.hpp"
 
 class System;
 
-class Person;
-
-System* read_files(char* argv[]);
+shared_ptr<System> read_files(char* argv[]);
 
 vector<Major> read_majors_file(ifstream& majors);
 
-vector<Person> read_person_file(ifstream& persons, vector<Major> majors_list, string type);
+vector<Student> read_students_file(ifstream& students, vector<Major> majors_list);
 
 vector<Course> read_courses_file(ifstream& courses);
 
-vector<Person> adjustment_persons(vector<Person> students_list, vector<Person> professors_list);
+vector<Professor> read_professors_file(ifstream& professors, vector<Major> majors_list);
+
+vector<shared_ptr<Person>> adjustment_persons(vector<Student> students_list, vector<Professor> professors_list);

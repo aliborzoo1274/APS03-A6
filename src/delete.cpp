@@ -15,11 +15,7 @@ void System::delete_method()
     if (command == "post")
         delete_post();
     else if (command == "my_courses")
-    {
-        if (!current_user->is_student())
-            error("Permission Denied");
         delete_my_courses();
-    }
 }
 
 void System::delete_post()
@@ -50,6 +46,9 @@ void System::delete_my_courses()
     int course_id;
     bool id_in_line_found = false;
     bool id_found = false;
+    auto student = dynamic_pointer_cast<Student>(current_user);
+    if (student == nullptr)
+        error("Permission Denied");
     vector<string> words = read_line();
     for (int i = 0; i < words.size(); i++)
     {
@@ -61,7 +60,7 @@ void System::delete_my_courses()
     }
     if (!id_in_line_found)
         error("Bad Request");
-    if (current_user->has_course_id_then_delete(course_id))
+    if (student->has_course_id_then_delete(course_id))
         id_found = true;
     if (!id_found)
         error("Not Found");

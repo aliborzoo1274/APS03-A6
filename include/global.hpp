@@ -14,6 +14,21 @@ const char FIRST_DELIM = ',';
 const char SECOND_DELIM = ';';
 const string ADMIN = "UT_account";
 
+struct Post
+{
+    int post_id;
+    string title;
+    string message;
+    string image_address;
+};
+
+struct Notification
+{
+    int person_id;
+    string person_name;
+    string message;
+};
+
 struct Time
 {
     string week_day;

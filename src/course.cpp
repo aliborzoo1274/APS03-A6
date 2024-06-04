@@ -33,7 +33,7 @@ bool Course::is_in_this_major(int id)
     return false;
 }
 
-void Course::set_information(Person* professor, int capacity, int class_number, Time time, Date exam_date, int unique_id)
+void Course::set_information(shared_ptr<Professor> professor, int capacity, int class_number, Time time, Date exam_date, int unique_id)
 {
     this->professor = professor;
     this->capacity = capacity;
@@ -43,7 +43,7 @@ void Course::set_information(Person* professor, int capacity, int class_number, 
     this->unique_id = unique_id;
 }
 
-bool Course::has_conflict(Course* course)
+bool Course::has_conflict(shared_ptr<Course> course)
 {
     if (time.week_day == course->time.week_day)
     {
@@ -63,16 +63,16 @@ bool Course::has_conflict(Course* course)
     return false;
 }
 
-bool Course::prerequisite_met(string semester)
+bool Course::prerequisite_met(int semester)
 {
-    if (stoi(semester) >= prerequisite)
+    if (semester >= prerequisite)
         return true;
     else return false;
 }
 
-void Course::print(string p_name, string called_by)
+void Course::print(string called_by)
 {
-    cout << cid << ' ' << name << ' ' << capacity << ' ' << p_name;
+    cout << cid << ' ' << name << ' ' << capacity << ' ' << professor->get_name();
     if (called_by == "system_all")
         cout << endl;
     else if (called_by == "system_single" || called_by == "person")
@@ -88,9 +88,4 @@ string Course::get_name()
 Date Course::get_exam_date()
 {
     return exam_date;
-}
-
-Person* Course::get_professor()
-{
-    return professor;
 }

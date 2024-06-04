@@ -6,9 +6,11 @@ Major::Major(int mid, string name)
     this->name = name;
 }
 
-int Major::get_id()
+bool Major::match_id(int id)
 {
-    return mid;
+    if (mid == id)
+        return true;
+    return false;
 }
 
 string Major::get_name()
