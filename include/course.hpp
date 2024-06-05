@@ -24,6 +24,8 @@ public:
     void print(string called_by);
     void send_course_post(Person* author, string title, string message, string image_address);
     void show_posts();
+    bool has_post(int post_id);
+    void show_post(int id);
     string get_name();
     Date get_exam_date();
 private:

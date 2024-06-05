@@ -74,7 +74,7 @@ bool Person::allowed_then_course_post(int course_id, string title, string messag
 {
     for (int i = 0; i < courses.size(); i++)
     {
-        if (courses[i]->id_match(course_id))
+        if (courses[i]->unique_id_match(course_id))
         {
             courses[i]->send_course_post(this, title, message, image_address);
             return true;
@@ -83,15 +83,12 @@ bool Person::allowed_then_course_post(int course_id, string title, string messag
     return false;
 }
 
-bool Person::allowed_then_show_channel(int course_id)
+bool Person::allowed_to_course(int id)
 {
     for (int i = 0; i < courses.size(); i++)
     {
-        if (courses[i]->id_match(course_id))
-        {
-            courses[i]->show_posts();
+        if (courses[i]->unique_id_match(id))
             return true;
-        }
     }
     return false;
 }

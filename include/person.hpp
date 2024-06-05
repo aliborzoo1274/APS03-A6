@@ -14,7 +14,7 @@ public:
     void take_course(shared_ptr<Course> course);
     bool show_courses();
     bool allowed_then_course_post(int course_id, string title, string message, string image_address);
-    bool allowed_then_show_channel(int course_id);
+    bool allowed_to_course(int id);
     int get_id();
     string get_name();
     int get_major_id();

@@ -10,7 +10,7 @@ void System::get_method()
         error("Bad Request");
     if (command != "courses" && command != "personal_page" &&
         command != "post" && command != "notification" && command != "my_courses" &&
-        command != "course_channel")
+        command != "course_channel" && command != "course_post")
         error("Not Found");
     if (current_user == nullptr)
         error("Permission Denied");
@@ -26,6 +26,8 @@ void System::get_method()
         get_my_courses();
     else if (command == "course_channel")
         get_course_channel();
+    else if (command == "course_post")
+        get_course_post();
 }
 
 void System::get_courses()
@@ -154,9 +156,45 @@ void System::get_course_channel()
     }
     if (!id_in_line_found)
         error("Bad Request");
-    if (!has_course_id(id))
+    auto course = get_course(id);
+    if (course == nullptr)
         error("Not Found");
     auto person = dynamic_pointer_cast<Person>(current_user);
-    if (person == nullptr || !person->allowed_then_show_channel(id))
+    if (person == nullptr || !person->allowed_to_course(id))
         error("Permission Denied");
+    course->show_posts();
+}
+
+void System::get_course_post()
+{
+    int course_id, post_id;
+    bool id_in_line_found = false;
+    bool post_id_in_line_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id" && !id_in_line_found)
+        {
+            id_in_line_found = true;
+            course_id = string_to_int(words[i + 1]);
+        }
+        if (words[i] == "post_id" && !post_id_in_line_found)
+        {
+            post_id_in_line_found = true;
+            post_id = string_to_int(words[i + 1]);
+            if (post_id <= 0)
+                error("Bad Request");
+        }
+    }
+    if (!id_in_line_found || !post_id_in_line_found)
+        error("Bad Request");
+    auto course = get_course(course_id);
+    if (course == nullptr)
+        error("Not Found");
+    if (!course->has_post(post_id))
+        error("Not Found");
+    auto person = dynamic_pointer_cast<Person>(current_user);
+    if (person == nullptr || !person->allowed_to_course(course_id))
+        error("Permission Denied");
+    course->show_post(post_id);
 }

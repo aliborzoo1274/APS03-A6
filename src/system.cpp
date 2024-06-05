@@ -209,7 +209,7 @@ bool System::has_course_id(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
     {
-        if (offered_courses[i]->id_match(id))
+        if (offered_courses[i]->unique_id_match(id))
             return true;
     }
     return false;
@@ -219,7 +219,7 @@ void System::show_course_inf(int id)
 {
     for (int i = 0; i < offered_courses.size(); i++)
     {
-        if (offered_courses[i]->id_match(id))
+        if (offered_courses[i]->unique_id_match(id))
             offered_courses[i]->print("system_single");
     }
 }

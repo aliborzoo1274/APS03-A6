@@ -31,6 +31,7 @@ private:
     void get_notif();
     void get_my_courses();
     void get_course_channel();
+    void get_course_post();
     void post_method();
     void post_login();
     void post_logout();

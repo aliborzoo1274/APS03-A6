@@ -108,6 +108,29 @@ void Course::show_posts()
     }
 }
 
+bool Course::has_post(int post_id)
+{
+    for (int i = 0; i < channel_posts.size(); i++)
+    {
+        if (channel_posts[i].post.post_id == post_id)
+            return true;
+    }
+    return false;
+}
+
+void Course::show_post(int id)
+{
+    for (int i = 0; i < channel_posts.size(); i++)
+    {
+        if (channel_posts[i].post.post_id == id)
+        {
+            print("person");
+            cout << channel_posts[i].post.post_id << ' ' << channel_posts[i].author_name << ' ' <<
+            '"' << channel_posts[i].post.title << '"' << ' ' << '"' << channel_posts[i].post.message << '"' << endl;
+        }
+    }
+}
+
 string Course::get_name()
 {
     return name;
