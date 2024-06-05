@@ -11,9 +11,9 @@ public:
     void set_notification(int id, string name, string message);
     bool show_notifications();
     bool has_time_conflict(shared_ptr<Course> course);
-    void take_course(shared_ptr<Course> course);
+    virtual void take_course(shared_ptr<Course> course);
     bool show_courses();
-    bool allowed_then_course_post(int course_id, string title, string message, string image_address);
+    virtual bool allowed_then_course_post(int course_id, string title, string message, string image_address);
     bool allowed_to_course(int id);
     int get_id();
     string get_name();

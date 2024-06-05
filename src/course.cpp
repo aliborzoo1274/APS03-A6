@@ -154,6 +154,7 @@ void Course::answer_ta_requests()
         if (acceptance_result == "accept")
         {
             ta_list.push_back(student);
+            add_person(student);
             student->set_notification(unique_id, name,
             "Your request to be a teaching assistant has been accepted.");
         }
@@ -168,6 +169,16 @@ void Course::answer_ta_requests()
             continue;
         }
     }
+}
+
+bool Course::is_ta(Student* student)
+{
+    for (int i = 0; i < ta_list.size(); i++)
+    {
+        if (ta_list[i]->get_id() == student->get_id())
+            return true;
+    }
+    return false;
 }
 
 string Course::get_name()

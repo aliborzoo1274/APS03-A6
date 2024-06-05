@@ -30,6 +30,7 @@ public:
     void show_post(int id);
     bool has_ta_prerequisite_then_accept(shared_ptr<Student> student);
     void answer_ta_requests();
+    bool is_ta(Student* student);
     string get_name();
     Date get_exam_date();
 private:

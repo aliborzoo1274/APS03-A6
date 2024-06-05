@@ -58,7 +58,6 @@ bool Person::has_time_conflict(shared_ptr<Course> course)
 void Person::take_course(shared_ptr<Course> course)
 {
     courses.push_back(course);
-    send_notification(id, name, "Get Course");
 }
 
 bool Person::show_courses()
