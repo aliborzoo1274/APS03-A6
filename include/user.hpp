@@ -17,15 +17,15 @@ public:
     virtual bool has_post_then_show_it(int id);
     void set_profile_photo(string photo_address);
 private:
-    int num_of_posts = 1;
-    vector<Post> posts;
     string password;
     string profile_photo_address;
-    void show_posts();
 protected:
     int id;
     string name;
+    int num_of_posts = 1;
+    vector<Post> posts;
     vector<shared_ptr<Person>> connected_users;
     virtual void print_inf() = 0;
+    virtual void show_posts();
     void send_notification(int id, string name, string message);
 };

@@ -40,6 +40,7 @@ private:
     void post_course_offer();
     void post_profile_photo();
     void post_course_post();
+    void post_ta_form();
     void put_method();
     void put_my_courses();
     void delete_method();

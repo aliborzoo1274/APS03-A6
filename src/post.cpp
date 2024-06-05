@@ -14,7 +14,8 @@ void System::post_method()
             post_login();
         else if (command != "logout" && command != "post" &&
                  command != "connect" && command != "course_offer" &&
-                 command != "profile_photo" && command != "course_post")
+                 command != "profile_photo" && command != "course_post" &&
+                 command != "ta_form")
             error("Not Found");
         else
             error("Permission Denied");
@@ -35,6 +36,8 @@ void System::post_method()
             post_profile_photo();
         else if (command == "course_post")
             post_course_post();
+        else if (command == "ta_form")
+            post_ta_form();
         else
             error("Not Found");
     }
@@ -330,5 +333,46 @@ void System::post_course_post()
     auto person = dynamic_pointer_cast<Person>(current_user);
     if (person == nullptr || !person->allowed_then_course_post(id, title, message, image_address))
         error("Permission Denied");
+    order_done("OK");
+}
+
+void System::post_ta_form()
+{
+    int course_id;
+    string message;
+    bool course_in_line_id_found = false;
+    bool message_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "course_id" && !course_in_line_id_found)
+        {
+            course_in_line_id_found = true;
+            course_id = string_to_int(words[i + 1]);
+        }
+        else if (words[i] == "message" && !message_found)
+        {
+            i++;
+            while (i < words.size() && words[i].back() != '"')
+                message += words[i++] + ' ';
+            if (i < words.size())
+                message += words[i];
+            if (message.front() == '"' && message.back() == '"')
+            {
+                message = message.substr(1, message.size() - 2);
+                message_found = true;
+            }
+        }
+    }
+    if (!course_in_line_id_found || !message_found)
+        error("Bad Request");
+
+    auto course = get_course(course_id);
+    if (course == nullptr)
+        error("Not Found");
+    auto professor = dynamic_pointer_cast<Professor>(current_user);
+    if (professor == nullptr || !professor->allowed_to_course(course_id))
+        error("Permission Denied");
+    professor->send_ta_post(course, message);
     order_done("OK");
 }
