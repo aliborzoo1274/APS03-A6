@@ -52,6 +52,31 @@ void Professor::show_posts()
     }
 }
 
+bool Professor::has_post_then_show_it(int id)
+{
+    for (int i = 0; i < posts.size(); i++)
+    {
+        if (posts[i].post_id == id)
+        {
+            print_inf();
+            cout << posts[i].post_id << ' ' << '"' << posts[i].title << '"' << ' ' << '"' << posts[i].message << '"' << endl;
+            return true;
+        }
+    }
+    for (int i = 0; i < ta_posts.size(); i++)
+    {
+        if (ta_posts[i].post_id == id)
+        {
+            print_inf();
+            cout << ta_posts[i].post_id << ' ' << "TA form for " << ta_posts[i].course->get_name() << " course" << endl;
+            ta_posts[i].course->print("person");
+            cout << ta_posts[i].message << endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 string Professor::get_position()
 {
     return position;

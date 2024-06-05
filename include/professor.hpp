@@ -15,6 +15,7 @@ public:
     Professor(int id, string name, int major_id, string major_name, string position, string password);
     void send_ta_post(shared_ptr<Course> course, string message);
     void show_posts();
+    bool has_post_then_show_it(int id);
     string get_position();
 private:
     string position;
