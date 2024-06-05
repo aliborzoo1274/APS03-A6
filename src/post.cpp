@@ -280,6 +280,7 @@ void System::post_profile_photo()
     }
     if (!photo_found)
         error("Bad Request");
+    order_done("OK");
 }
 
 void System::post_course_post()
