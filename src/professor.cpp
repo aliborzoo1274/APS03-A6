@@ -77,6 +77,16 @@ bool Professor::has_post_then_show_it(int id)
     return false;
 }
 
+shared_ptr<Course> Professor::get_ta_form_course(int form_id)
+{
+    for (int i = 0; i < ta_posts.size(); i++)
+    {
+        if (ta_posts[i].post_id == form_id)
+            return ta_posts[i].course;
+    }
+    return nullptr;
+}
+
 string Professor::get_position()
 {
     return position;

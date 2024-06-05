@@ -41,6 +41,7 @@ private:
     void post_profile_photo();
     void post_course_post();
     void post_ta_form();
+    void post_ta_request();
     void put_method();
     void put_my_courses();
     void delete_method();
@@ -54,4 +55,5 @@ private:
     bool has_course_id(int id);
     void show_course_inf(int id);
     shared_ptr<Course> get_course(int id);
+    shared_ptr<Professor> get_professor(int id);
 };

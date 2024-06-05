@@ -1,4 +1,5 @@
 #include "course.hpp"
+#include "student.hpp"
 
 Course::Course(int cid, string name, int credit, int prerequisite, vector<int> majors_id)
 {
@@ -129,6 +130,16 @@ void Course::show_post(int id)
             '"' << channel_posts[i].post.title << '"' << ' ' << '"' << channel_posts[i].post.message << '"' << endl;
         }
     }
+}
+
+bool Course::has_ta_prerequisite_then_accept(shared_ptr<Student> student)
+{
+    if (student->get_semester() > prerequisite)
+    {
+        ta_requests.push_back(student);
+        return true;
+    }
+    return false;
 }
 
 string Course::get_name()

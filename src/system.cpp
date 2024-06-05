@@ -233,3 +233,17 @@ shared_ptr<Course> System::get_course(int id)
     }
     return nullptr;
 }
+
+shared_ptr<Professor> System::get_professor(int id)
+{
+    for (int i = 0; i < users.size(); i++)
+    {
+        auto professor = dynamic_pointer_cast<Professor>(current_user);
+        if (professor != nullptr)
+        {
+            if (professor->id_match(id))
+                return professor;
+        }
+    }
+    return nullptr;
+}

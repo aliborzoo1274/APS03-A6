@@ -26,6 +26,7 @@ public:
     void show_posts();
     bool has_post(int post_id);
     void show_post(int id);
+    bool has_ta_prerequisite_then_accept(shared_ptr<Student> student);
     string get_name();
     Date get_exam_date();
 private:
@@ -36,6 +37,7 @@ private:
     shared_ptr<Professor> professor = nullptr;
     vector<shared_ptr<Person>> persons;
     vector<Course_channel_post> channel_posts;
+    vector<shared_ptr<Student>> ta_requests;
     int capacity;
     int class_number;
     string name;

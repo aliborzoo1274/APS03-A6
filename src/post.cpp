@@ -15,7 +15,7 @@ void System::post_method()
         else if (command != "logout" && command != "post" &&
                  command != "connect" && command != "course_offer" &&
                  command != "profile_photo" && command != "course_post" &&
-                 command != "ta_form")
+                 command != "ta_form" && command != "ta_request")
             error("Not Found");
         else
             error("Permission Denied");
@@ -38,6 +38,8 @@ void System::post_method()
             post_course_post();
         else if (command == "ta_form")
             post_ta_form();
+        else if (command == "ta_request")
+            post_ta_request();
         else
             error("Not Found");
     }
@@ -366,7 +368,6 @@ void System::post_ta_form()
     }
     if (!course_in_line_id_found || !message_found)
         error("Bad Request");
-
     auto course = get_course(course_id);
     if (course == nullptr)
         error("Not Found");
@@ -374,5 +375,38 @@ void System::post_ta_form()
     if (professor == nullptr || !professor->allowed_to_course(course_id))
         error("Permission Denied");
     professor->send_ta_post(course, message);
+    order_done("OK");
+}
+
+void System::post_ta_request()
+{
+    int professor_id, form_id;
+    bool professor_id_in_line_found = false;
+    bool form_id_in_line_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "professor_id" && !professor_id_in_line_found)
+        {
+            professor_id_in_line_found = true;
+            professor_id = string_to_int(words[i + 1]);
+        }
+        if (words[i] == "form_id" && !form_id_in_line_found)
+        {
+            form_id_in_line_found = true;
+            form_id = string_to_int(words[i + 1]);
+        }
+    }
+    if (!professor_id_in_line_found || !form_id_in_line_found)
+        error("Bad Request");
+    auto professor = get_professor(professor_id);
+    if (professor == nullptr)
+        error("Not Found");
+    auto course = professor->get_ta_form_course(form_id);
+    if (course == nullptr)
+        error("Not Found");
+    auto student = dynamic_pointer_cast<Student>(current_user);
+    if (student == nullptr || !course->has_ta_prerequisite_then_accept(student))
+        error("Permission Denied");
     order_done("OK");
 }
