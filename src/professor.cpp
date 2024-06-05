@@ -87,6 +87,15 @@ shared_ptr<Course> Professor::get_ta_form_course(int form_id)
     return nullptr;
 }
 
+void Professor::delete_ta_form(int id)
+{
+    for (int i = 0; i < ta_posts.size(); i++)
+    {
+        if (ta_posts[i].post_id == id)
+            ta_posts.erase(ta_posts.begin() + i);
+    }
+}
+
 string Professor::get_position()
 {
     return position;

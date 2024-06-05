@@ -17,6 +17,7 @@ public:
     void show_posts();
     bool has_post_then_show_it(int id);
     shared_ptr<Course> get_ta_form_course(int form_id);
+    void delete_ta_form(int id);
     string get_position();
 private:
     string position;

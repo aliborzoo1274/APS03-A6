@@ -78,7 +78,7 @@ bool Course::prerequisite_met(int semester)
 
 void Course::print(string called_by)
 {
-    cout << cid << ' ' << name << ' ' << capacity << ' ' << professor->get_name();
+    cout << unique_id << ' ' << name << ' ' << capacity << ' ' << professor->get_name();
     if (called_by == "system_all")
         cout << endl;
     else if (called_by == "system_single" || called_by == "person")
@@ -95,7 +95,7 @@ void Course::send_course_post(Person* author, string title, string message, stri
     for (int i = 0; i < persons.size(); i++)
     {
         if (persons[i]->get_id() != author->get_id())
-            persons[i]->set_notification(cid, name, "New Course Post");
+            persons[i]->set_notification(unique_id, name, "New Course Post");
     }
 }
 
@@ -140,6 +140,34 @@ bool Course::has_ta_prerequisite_then_accept(shared_ptr<Student> student)
         return true;
     }
     return false;
+}
+
+void Course::answer_ta_requests()
+{
+    string acceptance_result;
+    cout << "We have received " << ta_requests.size() << " requests for the teaching assistant position" << endl;
+    for (int i = 0; i < ta_requests.size(); i++)
+    {
+        auto student = ta_requests[i];
+        cout << student->get_id() << ' ' << student->get_name() << ' ' << student->get_semester() << ':' << ' ';
+        cin >> acceptance_result;
+        if (acceptance_result == "accept")
+        {
+            ta_list.push_back(student);
+            student->set_notification(unique_id, name,
+            "Your request to be a teaching assistant has been accepted.");
+        }
+        else if (acceptance_result == "reject")
+        {
+            student->set_notification(unique_id, name,
+            "Your request to be a teaching assistant has been rejected.");
+        }
+        else
+        {
+            i--;
+            continue;
+        }
+    }
 }
 
 string Course::get_name()

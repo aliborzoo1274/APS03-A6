@@ -15,7 +15,8 @@ void System::post_method()
         else if (command != "logout" && command != "post" &&
                  command != "connect" && command != "course_offer" &&
                  command != "profile_photo" && command != "course_post" &&
-                 command != "ta_form" && command != "ta_request")
+                 command != "ta_form" && command != "ta_request" &&
+                 command != "close_ta_form")
             error("Not Found");
         else
             error("Permission Denied");
@@ -40,6 +41,8 @@ void System::post_method()
             post_ta_form();
         else if (command == "ta_request")
             post_ta_request();
+        else if (command == "close_ta_form")
+            post_close_ta_form();
         else
             error("Not Found");
     }
@@ -409,4 +412,29 @@ void System::post_ta_request()
     if (student == nullptr || !course->has_ta_prerequisite_then_accept(student))
         error("Permission Denied");
     order_done("OK");
+}
+
+void System::post_close_ta_form()
+{
+    int form_id;
+    bool id_in_line_found = false;
+    vector<string> words = read_line();
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (words[i] == "id" && !id_in_line_found)
+        {
+            id_in_line_found = true;
+            form_id = string_to_int(words[i + 1]);
+        }
+    }
+    if (!id_in_line_found)
+        error("Bad Request");
+    auto professor = dynamic_pointer_cast<Professor>(current_user);
+    if (professor == nullptr)
+        error("Permission Denied");
+    auto course = professor->get_ta_form_course(form_id);
+    if (course == nullptr)
+        error("Not Found");
+    course->answer_ta_requests();
+    professor->delete_ta_form(form_id);
 }
