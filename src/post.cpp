@@ -328,7 +328,7 @@ void System::post_course_post()
     if (!has_course_id(id))
         error("Not Found");
     auto person = dynamic_pointer_cast<Person>(current_user);
-    if (person == nullptr || !person->allowed_then_course_post(id, title, message, image_address));
+    if (person == nullptr || !person->allowed_then_course_post(id, title, message, image_address))
         error("Permission Denied");
     order_done("OK");
 }

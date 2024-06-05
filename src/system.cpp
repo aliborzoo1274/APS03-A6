@@ -231,4 +231,5 @@ shared_ptr<Course> System::get_course(int id)
         if (offered_courses[i]->unique_id_match(id))
             return offered_courses[i];
     }
+    return nullptr;
 }

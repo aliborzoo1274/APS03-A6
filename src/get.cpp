@@ -157,6 +157,6 @@ void System::get_course_channel()
     if (!has_course_id(id))
         error("Not Found");
     auto person = dynamic_pointer_cast<Person>(current_user);
-    if (person == nullptr || !person->allowed_then_show_channel(id));
+    if (person == nullptr || !person->allowed_then_show_channel(id))
         error("Permission Denied");
 }
