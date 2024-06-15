@@ -15,12 +15,11 @@ System::System(vector<Major> majors, vector<shared_ptr<Person>> persons, vector<
 
 void System::answer_command()
 {
-    while (TRUE)
+    string command_method;
+    while (cin >> command_method)
     {
         try
         {
-            string command_method;
-            cin >> command_method;
             if (command_method == "GET")
                 get_method();
             else if (command_method == "POST")
